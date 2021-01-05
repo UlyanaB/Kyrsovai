@@ -159,5 +159,11 @@ namespace DB
                 setSysInfo.ExecuteNonQuery();
             }
         }
+
+        private void BtnRegistr_Click(object sender, EventArgs e)
+        {
+            Registr newForm = new Registr();
+            newForm.Show();
+        }
     }
 }
