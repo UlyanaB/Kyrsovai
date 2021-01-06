@@ -406,5 +406,10 @@ namespace DB
 
             DialogResult dr = ls.ShowDialog();
         }
+
+        private void Btn10_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

@@ -42,6 +42,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.BtnClassLesson = new System.Windows.Forms.Button();
             this.BtnLessonVid = new System.Windows.Forms.Button();
+            this.Btn10 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -87,7 +88,7 @@
             this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1185, 466);
+            this.dataGridView1.Size = new System.Drawing.Size(1185, 508);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             // 
@@ -200,11 +201,22 @@
             this.BtnLessonVid.UseVisualStyleBackColor = true;
             this.BtnLessonVid.Click += new System.EventHandler(this.BtnLessonVid_Click);
             // 
+            // Btn10
+            // 
+            this.Btn10.Location = new System.Drawing.Point(1219, 486);
+            this.Btn10.Name = "Btn10";
+            this.Btn10.Size = new System.Drawing.Size(75, 23);
+            this.Btn10.TabIndex = 3;
+            this.Btn10.Text = "10";
+            this.Btn10.UseVisualStyleBackColor = true;
+            this.Btn10.Click += new System.EventHandler(this.Btn10_Click);
+            // 
             // BtnLesson
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1452, 492);
+            this.ClientSize = new System.Drawing.Size(1452, 534);
+            this.Controls.Add(this.Btn10);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dataGridView1);
@@ -230,5 +242,6 @@
         private System.Windows.Forms.Button BtnLessonVid;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button BtnClassLesson;
+        private System.Windows.Forms.Button Btn10;
     }
 }

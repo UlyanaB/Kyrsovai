@@ -15,7 +15,12 @@ namespace DB
     public partial class Student : Form
     {
         private string additionalHandling = "";
-
+        int LimitRows;
+        int OffSetRows = 0;
+        EnumTabels Metod = EnumTabels.None;
+        int PageNumber = 1;
+        int NumberRows;
+        int NotGo;
         /// <summary>
         /// конструктор формы
         /// </summary>
@@ -100,6 +105,28 @@ namespace DB
         {
             allowEdit();
             Program.mainForm.da = new NpgsqlDataAdapter(select, Program.mainForm.con);
+
+            NpgsqlCommandBuilder npgsqlCommandBuilder = new NpgsqlCommandBuilder(Program.mainForm.da);
+            Program.mainForm.da.InsertCommand = npgsqlCommandBuilder.GetInsertCommand();
+            Program.mainForm.da.UpdateCommand = npgsqlCommandBuilder.GetUpdateCommand();
+            Program.mainForm.da.DeleteCommand = npgsqlCommandBuilder.GetDeleteCommand();
+            Program.mainForm.ds.Reset();
+            Program.mainForm.da.Fill(Program.mainForm.ds);
+            Program.mainForm.dt = Program.mainForm.ds.Tables[0];
+            dataGridView1.DataSource = Program.mainForm.dt;
+            dataGridView1.Columns[0].ReadOnly = false;
+            dataGridView1.Columns[1].ReadOnly = false;
+
+        }
+        /// <summary>
+        /// для всех кнопок по которым допускается изменение даннх
+        /// </summary>
+        /// <param name="select"></param>
+        private void all_update_button(NpgsqlCommand npgsqlCommand)
+        {
+            allowEdit();
+            Program.mainForm.da = new NpgsqlDataAdapter(npgsqlCommand);
+
             NpgsqlCommandBuilder npgsqlCommandBuilder = new NpgsqlCommandBuilder(Program.mainForm.da);
             Program.mainForm.da.InsertCommand = npgsqlCommandBuilder.GetInsertCommand();
             Program.mainForm.da.UpdateCommand = npgsqlCommandBuilder.GetUpdateCommand();
@@ -226,20 +253,40 @@ namespace DB
         /// <param name="e"></param>
         private void btnClass_Click(object sender, EventArgs e)
         {
+            PageNumber = 1;
+            Metod = EnumTabels.Class;
+            OffSetRows = 0;
+            NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            BtnClass();
+        }
+
+        private void BtnClass()
+        {
+            //BlockBtnForward();
+            LabPageNumber.Text = "Номер страницы: " + PageNumber;
+            //NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString())
             try
             {
                 PrepareGrid();
-                string select = "SELECT cl.id_class, cl.class_number FROM class0 cl;";
-                all_update_button(select);
+                string select = "SELECT cl.id_class, cl.class_number FROM class0 cl ORDER BY class_number LIMIT @limit OFFSET @offset;";
+                NpgsqlCommand npgsqlCommand = new NpgsqlCommand(select, Program.mainForm.con);
+                LimitRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+                npgsqlCommand.Parameters.AddWithValue("@limit", LimitRows);
+                npgsqlCommand.Parameters.AddWithValue("@offset", OffSetRows);
+                all_update_button(npgsqlCommand);
                 dataGridView1.Columns[0].ReadOnly = true;
                 dataGridView1.Columns[0].Visible = false;
                 additionalHandling = "class0";
+                if (OffSetRows >= 0)
+                {
+                    BtnForward.Enabled = true;
+                }
+                BlockBtnForward();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
             }
-
         }
 
         /// <summary>
@@ -479,6 +526,74 @@ namespace DB
                 MessageBox.Show(ex.Message, "Error");
             }
 
+        }
+
+        private void Student_Load(object sender, EventArgs e)
+        {
+            ComBoxLimitRows.Text = ComBoxLimitRows.Items[0].ToString();
+        }
+
+        private void BlockBtnForward()
+        {
+            string Block = "select count(*) FROM class0";
+            NpgsqlCommand npgsqlCommand = new NpgsqlCommand(Block, Program.mainForm.con);
+            object result = npgsqlCommand.ExecuteScalar();
+            int BlockForward = Convert.ToInt32(result); 
+            if(BlockForward <= NumberRows)
+            {
+                BtnForward.Enabled = false;
+            }
+            
+        }
+
+        private void BtnBack_Click(object sender, EventArgs e)
+        {
+            OffSetRows -= int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            PageNumber -= 1;
+            NumberRows -= LimitRows;
+            NotGo = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            if (LimitRows != NotGo)
+            {
+                BtnBack.Enabled = false;
+                BtnForward.Enabled = false;
+                return;
+            }
+            switch (Metod)
+            {
+                case EnumTabels.Class:
+                    BtnClass();
+
+                    break;
+            }
+            if (OffSetRows <= 0)
+            {
+                BtnBack.Enabled = false;
+            }
+        }
+
+        private void BtnForward_Click(object sender, EventArgs e)
+        {
+            OffSetRows += int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            PageNumber += 1;
+            NumberRows += LimitRows;
+            NotGo = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            if (LimitRows != NotGo)
+            {
+                BtnBack.Enabled = false;
+                BtnForward.Enabled = false;
+                return;
+            }
+            switch (Metod)
+            {
+                case EnumTabels.Class:
+                    BtnClass();
+
+                    break;
+            }
+            if (OffSetRows >= 0)
+            {
+                BtnBack.Enabled = true;
+            }
         }
     }
 }
