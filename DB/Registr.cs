@@ -7,11 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.Mail;
 
 namespace DB
 {
     public partial class Registr : Form
     {
+        private string Mail = "";
+        private string Password = "";
+        private string NameR = "";
+        private string Login = "";
+
         public Registr()
         {
             InitializeComponent();
@@ -38,6 +44,34 @@ namespace DB
             TextBPassword.Text += PasLetterLittle[rnd.Next(PasNumber.Length)];
             for (int i = 4; i < Col; i++)
             TextBPassword.Text += Pas[rnd.Next(Pas.Length)];
+        }
+
+        //public void SaveBase
+
+        private void BtnAdminRegistr_Click(object sender, EventArgs e)
+        {
+            Mail = TextBMail.Text;
+            Password = TextBPassword.Text;
+            NameR = TextBName.Text;
+            Login = TextBLogin.Text;
+            
+
+            if (Mail == "" || Password == "" || NameR == "" || Login == "")
+            {
+                MessageBox.Show("Заполните все поля");
+            }
+            else
+            {
+                try
+                {
+                    MailAddress from = new MailAddress(Mail);
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("Неверный формат электронной почты. Почта должна иметь окончания - ****@****.**");
+                    TextBMail.Clear();
+                }
+            }
         }
     }
 }

@@ -35,25 +35,28 @@
             this.LabPassword = new System.Windows.Forms.Label();
             this.LabMail = new System.Windows.Forms.Label();
             this.LabInfo = new System.Windows.Forms.Label();
+            this.LabName = new System.Windows.Forms.Label();
+            this.TextBName = new System.Windows.Forms.TextBox();
+            this.BtnAdminRegistr = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // TextBLogin
             // 
-            this.TextBLogin.Location = new System.Drawing.Point(75, 47);
+            this.TextBLogin.Location = new System.Drawing.Point(75, 72);
             this.TextBLogin.Name = "TextBLogin";
             this.TextBLogin.Size = new System.Drawing.Size(175, 22);
             this.TextBLogin.TabIndex = 0;
             // 
             // TextBPassword
             // 
-            this.TextBPassword.Location = new System.Drawing.Point(75, 81);
+            this.TextBPassword.Location = new System.Drawing.Point(75, 106);
             this.TextBPassword.Name = "TextBPassword";
             this.TextBPassword.Size = new System.Drawing.Size(175, 22);
             this.TextBPassword.TabIndex = 1;
             // 
             // TextBMail
             // 
-            this.TextBMail.Location = new System.Drawing.Point(75, 110);
+            this.TextBMail.Location = new System.Drawing.Point(75, 135);
             this.TextBMail.Name = "TextBMail";
             this.TextBMail.Size = new System.Drawing.Size(175, 22);
             this.TextBMail.TabIndex = 2;
@@ -62,7 +65,7 @@
             // LabLogin
             // 
             this.LabLogin.AutoSize = true;
-            this.LabLogin.Location = new System.Drawing.Point(15, 50);
+            this.LabLogin.Location = new System.Drawing.Point(15, 75);
             this.LabLogin.Name = "LabLogin";
             this.LabLogin.Size = new System.Drawing.Size(47, 17);
             this.LabLogin.TabIndex = 3;
@@ -71,7 +74,7 @@
             // LabPassword
             // 
             this.LabPassword.AutoSize = true;
-            this.LabPassword.Location = new System.Drawing.Point(12, 81);
+            this.LabPassword.Location = new System.Drawing.Point(12, 106);
             this.LabPassword.Name = "LabPassword";
             this.LabPassword.Size = new System.Drawing.Size(57, 17);
             this.LabPassword.TabIndex = 4;
@@ -80,7 +83,7 @@
             // LabMail
             // 
             this.LabMail.AutoSize = true;
-            this.LabMail.Location = new System.Drawing.Point(13, 110);
+            this.LabMail.Location = new System.Drawing.Point(13, 135);
             this.LabMail.Name = "LabMail";
             this.LabMail.Size = new System.Drawing.Size(49, 17);
             this.LabMail.TabIndex = 5;
@@ -95,11 +98,40 @@
             this.LabInfo.TabIndex = 6;
             this.LabInfo.Text = "Регистрация нового админа";
             // 
+            // LabName
+            // 
+            this.LabName.AutoSize = true;
+            this.LabName.Location = new System.Drawing.Point(18, 43);
+            this.LabName.Name = "LabName";
+            this.LabName.Size = new System.Drawing.Size(35, 17);
+            this.LabName.TabIndex = 7;
+            this.LabName.Text = "Имя";
+            // 
+            // TextBName
+            // 
+            this.TextBName.Location = new System.Drawing.Point(75, 43);
+            this.TextBName.Name = "TextBName";
+            this.TextBName.Size = new System.Drawing.Size(175, 22);
+            this.TextBName.TabIndex = 8;
+            // 
+            // BtnAdminRegistr
+            // 
+            this.BtnAdminRegistr.Location = new System.Drawing.Point(3, 172);
+            this.BtnAdminRegistr.Name = "BtnAdminRegistr";
+            this.BtnAdminRegistr.Size = new System.Drawing.Size(274, 31);
+            this.BtnAdminRegistr.TabIndex = 9;
+            this.BtnAdminRegistr.Text = "Регистрация";
+            this.BtnAdminRegistr.UseVisualStyleBackColor = true;
+            this.BtnAdminRegistr.Click += new System.EventHandler(this.BtnAdminRegistr_Click);
+            // 
             // Registr
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(279, 183);
+            this.ClientSize = new System.Drawing.Size(279, 205);
+            this.Controls.Add(this.BtnAdminRegistr);
+            this.Controls.Add(this.TextBName);
+            this.Controls.Add(this.LabName);
             this.Controls.Add(this.LabInfo);
             this.Controls.Add(this.LabMail);
             this.Controls.Add(this.LabPassword);
@@ -124,5 +156,8 @@
         private System.Windows.Forms.Label LabPassword;
         private System.Windows.Forms.Label LabMail;
         private System.Windows.Forms.Label LabInfo;
+        private System.Windows.Forms.Label LabName;
+        private System.Windows.Forms.TextBox TextBName;
+        private System.Windows.Forms.Button BtnAdminRegistr;
     }
 }
