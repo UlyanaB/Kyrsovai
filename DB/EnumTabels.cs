@@ -13,6 +13,10 @@ namespace DB
         Lesson,
         Student,
         Teacher,
+        Object0,
+        StudentChoice,
+        OrderStudentChoice,
+        OrderStudent,
 
     }
 }
