@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button2 = new System.Windows.Forms.Button();
@@ -42,7 +42,12 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.BtnClassLesson = new System.Windows.Forms.Button();
             this.BtnLessonVid = new System.Windows.Forms.Button();
-            this.Btn10 = new System.Windows.Forms.Button();
+            this.ComBoxLimitRows = new System.Windows.Forms.ComboBox();
+            this.BtnBack = new System.Windows.Forms.Button();
+            this.BtnBackAll = new System.Windows.Forms.Button();
+            this.BtnForward = new System.Windows.Forms.Button();
+            this.BtnForwardAll = new System.Windows.Forms.Button();
+            this.LabPageNumber = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -50,42 +55,42 @@
             // 
             // dataGridView1
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle25.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle25;
             this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle26.BackColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle26.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle26.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle26;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Silver;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle27.BackColor = System.Drawing.Color.Silver;
+            dataGridViewCellStyle27.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle27.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle27.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle27.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle27;
             this.dataGridView1.EnableHeadersVisualStyles = false;
             this.dataGridView1.GridColor = System.Drawing.SystemColors.Control;
             this.dataGridView1.Location = new System.Drawing.Point(13, 14);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle28.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle28.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle28.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle28.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle28.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle28;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(1185, 508);
@@ -174,7 +179,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(200, 231);
+            this.groupBox2.Size = new System.Drawing.Size(200, 92);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Отчёты";
@@ -201,32 +206,92 @@
             this.BtnLessonVid.UseVisualStyleBackColor = true;
             this.BtnLessonVid.Click += new System.EventHandler(this.BtnLessonVid_Click);
             // 
-            // Btn10
+            // ComBoxLimitRows
             // 
-            this.Btn10.Location = new System.Drawing.Point(1219, 486);
-            this.Btn10.Name = "Btn10";
-            this.Btn10.Size = new System.Drawing.Size(75, 23);
-            this.Btn10.TabIndex = 3;
-            this.Btn10.Text = "10";
-            this.Btn10.UseVisualStyleBackColor = true;
-            this.Btn10.Click += new System.EventHandler(this.Btn10_Click);
+            this.ComBoxLimitRows.FormattingEnabled = true;
+            this.ComBoxLimitRows.Items.AddRange(new object[] {
+            "10",
+            "20",
+            "30",
+            "50",
+            "100"});
+            this.ComBoxLimitRows.Location = new System.Drawing.Point(1219, 358);
+            this.ComBoxLimitRows.Name = "ComBoxLimitRows";
+            this.ComBoxLimitRows.Size = new System.Drawing.Size(121, 24);
+            this.ComBoxLimitRows.TabIndex = 3;
+            // 
+            // BtnBack
+            // 
+            this.BtnBack.Location = new System.Drawing.Point(1219, 389);
+            this.BtnBack.Name = "BtnBack";
+            this.BtnBack.Size = new System.Drawing.Size(53, 23);
+            this.BtnBack.TabIndex = 4;
+            this.BtnBack.Text = "<";
+            this.BtnBack.UseVisualStyleBackColor = true;
+            this.BtnBack.Click += new System.EventHandler(this.BtnBack_Click);
+            // 
+            // BtnBackAll
+            // 
+            this.BtnBackAll.Location = new System.Drawing.Point(1219, 419);
+            this.BtnBackAll.Name = "BtnBackAll";
+            this.BtnBackAll.Size = new System.Drawing.Size(53, 23);
+            this.BtnBackAll.TabIndex = 5;
+            this.BtnBackAll.Text = "<<";
+            this.BtnBackAll.UseVisualStyleBackColor = true;
+            this.BtnBackAll.Click += new System.EventHandler(this.BtnBackAll_Click);
+            // 
+            // BtnForward
+            // 
+            this.BtnForward.Location = new System.Drawing.Point(1278, 390);
+            this.BtnForward.Name = "BtnForward";
+            this.BtnForward.Size = new System.Drawing.Size(53, 23);
+            this.BtnForward.TabIndex = 6;
+            this.BtnForward.Text = ">";
+            this.BtnForward.UseVisualStyleBackColor = true;
+            this.BtnForward.Click += new System.EventHandler(this.BtnForward_Click);
+            // 
+            // BtnForwardAll
+            // 
+            this.BtnForwardAll.Location = new System.Drawing.Point(1278, 419);
+            this.BtnForwardAll.Name = "BtnForwardAll";
+            this.BtnForwardAll.Size = new System.Drawing.Size(53, 23);
+            this.BtnForwardAll.TabIndex = 7;
+            this.BtnForwardAll.Text = ">>";
+            this.BtnForwardAll.UseVisualStyleBackColor = true;
+            this.BtnForwardAll.Click += new System.EventHandler(this.BtnForwardAll_Click);
+            // 
+            // LabPageNumber
+            // 
+            this.LabPageNumber.AutoSize = true;
+            this.LabPageNumber.Location = new System.Drawing.Point(1219, 449);
+            this.LabPageNumber.Name = "LabPageNumber";
+            this.LabPageNumber.Size = new System.Drawing.Size(80, 17);
+            this.LabPageNumber.TabIndex = 8;
+            this.LabPageNumber.Text = "Страниц: 0";
             // 
             // BtnLesson
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1452, 534);
-            this.Controls.Add(this.Btn10);
+            this.Controls.Add(this.LabPageNumber);
+            this.Controls.Add(this.BtnForwardAll);
+            this.Controls.Add(this.BtnForward);
+            this.Controls.Add(this.BtnBackAll);
+            this.Controls.Add(this.BtnBack);
+            this.Controls.Add(this.ComBoxLimitRows);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dataGridView1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "BtnLesson";
             this.Text = "Учитель";
+            this.Load += new System.EventHandler(this.BtnLesson_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -242,6 +307,11 @@
         private System.Windows.Forms.Button BtnLessonVid;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button BtnClassLesson;
-        private System.Windows.Forms.Button Btn10;
+        private System.Windows.Forms.ComboBox ComBoxLimitRows;
+        private System.Windows.Forms.Button BtnBack;
+        private System.Windows.Forms.Button BtnBackAll;
+        private System.Windows.Forms.Button BtnForward;
+        private System.Windows.Forms.Button BtnForwardAll;
+        private System.Windows.Forms.Label LabPageNumber;
     }
 }

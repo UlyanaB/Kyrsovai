@@ -17,6 +17,9 @@ namespace DB
         StudentChoice,
         OrderStudentChoice,
         OrderStudent,
+        ClassTeacher,
+        LessonVid,
+        ClassLesson,
 
     }
 }

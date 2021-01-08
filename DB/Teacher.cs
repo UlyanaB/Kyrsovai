@@ -14,6 +14,15 @@ namespace DB
     public partial class BtnLesson : Form
     {
         string additionalHandling = "";
+        long LimitRows;
+        long OffSetRows = 0;
+        EnumTabels Metod = EnumTabels.None;
+        long PageNumber = 1;
+        long NumberRows;
+        long NotGo;
+        long BlockForward;
+        long OffSetRowsAll;
+        long MaxRows;
 
         public BtnLesson()
         {
@@ -44,6 +53,18 @@ namespace DB
         /// для всех кнопок по которым происходит только отображение данных
         /// </summary>
         /// <param name="sql"></param>
+        private void all_select_button(NpgsqlCommand npgsqlCommand)
+        {
+            viewOnly();
+            Program.mainForm.da = new NpgsqlDataAdapter(npgsqlCommand);
+
+            NpgsqlCommandBuilder npgsqlCommandBuilder = new NpgsqlCommandBuilder(Program.mainForm.da);
+            Program.mainForm.ds.Reset();
+            Program.mainForm.da.Fill(Program.mainForm.ds);
+            Program.mainForm.dt = Program.mainForm.ds.Tables[0];
+            dataGridView1.DataSource = Program.mainForm.dt;
+        }
+
         private void all_select_button(string sql)
         {
             viewOnly();
@@ -91,9 +112,27 @@ namespace DB
         /// для всех кнопок по которым допускается изменение даннх
         /// </summary>
         /// <param name="select"></param>
+        private void all_update_button(NpgsqlCommand npgsqlCommand)
+        {
+            allowEdit();
+            Program.mainForm.da = new NpgsqlDataAdapter(npgsqlCommand);
+
+            NpgsqlCommandBuilder npgsqlCommandBuilder = new NpgsqlCommandBuilder(Program.mainForm.da);
+            Program.mainForm.da.InsertCommand = npgsqlCommandBuilder.GetInsertCommand();
+            Program.mainForm.da.UpdateCommand = npgsqlCommandBuilder.GetUpdateCommand();
+            Program.mainForm.da.DeleteCommand = npgsqlCommandBuilder.GetDeleteCommand();
+            Program.mainForm.ds.Reset();
+            Program.mainForm.da.Fill(Program.mainForm.ds);
+            Program.mainForm.dt = Program.mainForm.ds.Tables[0];
+            dataGridView1.DataSource = Program.mainForm.dt;
+            dataGridView1.Columns[0].ReadOnly = false;
+            dataGridView1.Columns[1].ReadOnly = false;
+        }
+
         private void all_update_button(string select)
         {
             allowEdit();
+            
             Program.mainForm.da = new NpgsqlDataAdapter(select, Program.mainForm.con);
             NpgsqlCommandBuilder npgsqlCommandBuilder = new NpgsqlCommandBuilder(Program.mainForm.da);
             Program.mainForm.da.InsertCommand = npgsqlCommandBuilder.GetInsertCommand();
@@ -114,44 +153,92 @@ namespace DB
         /// <param name="e"></param>
         private void BtnObject_Click(object sender, EventArgs e)
         {
+            PageNumber = 1;
+
+            BtnBack.Enabled = false;
+            BtnForward.Enabled = false;
+
+            Metod = EnumTabels.Object0;
+            OffSetRows = 0;
+            NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            BtnObjectTecher();
+        }
+
+        private void BtnObjectTecher()
+        {
+            LabPageNumber.Text = "Номер страницы: " + PageNumber;
             try
             {
                 PrepareGrid();
                 string select = "SELECT ob.id_object, ob.title  " +
                                 "   FROM object0 ob             " +
-                                "   Order by ob.title;";
-                all_update_button(select);
+                                "   Order by ob.title LIMIT @limit OFFSET @offset;";
+                NpgsqlCommand npgsqlCommand = new NpgsqlCommand(select, Program.mainForm.con);
+                LimitRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+                npgsqlCommand.Parameters.AddWithValue("@limit", LimitRows);
+                npgsqlCommand.Parameters.AddWithValue("@offset", OffSetRows);
+                all_update_button(npgsqlCommand);
                 dataGridView1.Columns[0].ReadOnly = true;
                 dataGridView1.Columns[0].Visible = false;
                 additionalHandling = "object0";
+                if (OffSetRows >= 0)
+                {
+                    BtnForward.Enabled = true;
+                    BtnForwardAll.Enabled = true;
+                    BtnBackAll.Enabled = true;
+                }
+                BlockBtnForward("object0");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
             }
-
         }
 
 
 
         private void BtnTeacher_Click(object sender, EventArgs e)
         {
+            PageNumber = 1;
+
+            BtnBack.Enabled = false;
+            BtnForward.Enabled = false;
+
+            Metod = EnumTabels.Teacher;
+            OffSetRows = 0;
+            NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            BtnTeacherMetod();
+        }
+
+        private void BtnTeacherMetod()
+        {
+            LabPageNumber.Text = "Номер страницы: " + PageNumber;
             try
             {
                 PrepareGrid();
                 string select = "SELECT te.id_teacher, te.namt, te.middlenamet, te.secondnamet, te.logint, te.passwordt " +
                                 "   FROM teacher te                                                                     " +
-                                "   ORDER BY te.secondnamet;";
-                all_update_button(select);
+                                "   ORDER BY te.secondnamet LIMIT @limit OFFSET @offset;";
+                NpgsqlCommand npgsqlCommand = new NpgsqlCommand(select, Program.mainForm.con);
+                LimitRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+                npgsqlCommand.Parameters.AddWithValue("@limit", LimitRows);
+                npgsqlCommand.Parameters.AddWithValue("@offset", OffSetRows);
+                all_update_button(npgsqlCommand);
                 dataGridView1.Columns[0].ReadOnly = true;
                 dataGridView1.Columns[0].Visible = false;
                 additionalHandling = "teacher";
+                if (OffSetRows >= 0)
+                {
+                    BtnForward.Enabled = true;
+                    BtnForwardAll.Enabled = true;
+                    BtnBackAll.Enabled = true;
+                }
+                BlockBtnForward("teacher");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
             }
-
         }
 
         private void PrepareGrid()
@@ -174,6 +261,20 @@ namespace DB
 
         private void button1_Click(object sender, EventArgs e)
         {
+            PageNumber = 1;
+
+            BtnBack.Enabled = false;
+            BtnForward.Enabled = false;
+
+            Metod = EnumTabels.Lesson;
+            OffSetRows = 0;
+            NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            BtnLessonTeacher();
+        }
+
+        private void BtnLessonTeacher()
+        {
+            LabPageNumber.Text = "Номер страницы: " + PageNumber;
             try
             {
                 PrepareGrid();
@@ -183,8 +284,12 @@ namespace DB
                                 "   FROM lesson ls                                          " +
                                 "   JOIN object0 ob on ls.id_object = ob.id_object          " +
                                 "   JOIN teacher t on ls.id_teacher = t.id_teacher          " +
-                                "   ORDER BY t.secondnamet, t.namt, t.middlenamet           ";
-                all_select_button(select);
+                                "   ORDER BY t.secondnamet, t.namt, t.middlenamet LIMIT @limit OFFSET @offset";
+                NpgsqlCommand npgsqlCommand = new NpgsqlCommand(select, Program.mainForm.con);
+                LimitRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+                npgsqlCommand.Parameters.AddWithValue("@limit", LimitRows);
+                npgsqlCommand.Parameters.AddWithValue("@offset", OffSetRows);
+                all_select_button(npgsqlCommand);
 
                 dataGridView1.Columns[0].ReadOnly = true;
                 dataGridView1.Columns[1].ReadOnly = true;
@@ -193,29 +298,61 @@ namespace DB
                 dataGridView1.Columns[1].Visible = false;
                 dataGridView1.Columns[3].Visible = false;
                 additionalHandling = "lesson";
+                if (OffSetRows >= 0)
+                {
+                    BtnForward.Enabled = true;
+                    BtnForwardAll.Enabled = true;
+                    BtnBackAll.Enabled = true;
+                }
+                BlockBtnForward("lesson ls JOIN object0 ob on ls.id_object = ob.id_object JOIN teacher t on ls.id_teacher = t.id_teacher");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
             }
-
         }
 
         private void BtnLessonVid_Click(object sender, EventArgs e)
         {
+            PageNumber = 1;
+
+            BtnBack.Enabled = false;
+            BtnForward.Enabled = false;
+
+            Metod = EnumTabels.LessonVid;
+            OffSetRows = 0;
+            NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            BtnLessonVidTeacher();
+        }
+
+        private void BtnLessonVidTeacher()
+        {
+            LabPageNumber.Text = "Номер страницы: " + PageNumber;
             try
             {
                 PrepareGrid();
                 string sql = "SELECT ls.id_lesson, ob.title, te.namt, te.secondnamet, te.middlenamet " +
                                 "   FROM lesson ls, object0 ob, teacher te " +
-                                "   WHERE ls.id_object = ob.id_object AND ls.id_teacher=te.id_teacher;";
-                all_select_button(sql);
+                                "   WHERE ls.id_object = ob.id_object AND ls.id_teacher=te.id_teacher LIMIT @limit OFFSET @offset;";
+                NpgsqlCommand npgsqlCommand = new NpgsqlCommand(sql, Program.mainForm.con);
+                LimitRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+                npgsqlCommand.Parameters.AddWithValue("@limit", LimitRows);
+                npgsqlCommand.Parameters.AddWithValue("@offset", OffSetRows);
+                all_select_button(npgsqlCommand);
+
+                if (OffSetRows >= 0)
+                {
+                    BtnForward.Enabled = true;
+                    BtnForwardAll.Enabled = true;
+                    BtnBackAll.Enabled = true;
+                }
+                BlockBtnForward("lesson ls, object0 ob, teacher te " +
+                                "WHERE ls.id_object = ob.id_object AND ls.id_teacher=te.id_teacher");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
             }
-
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -233,6 +370,20 @@ namespace DB
 
         private void button2_Click(object sender, EventArgs e)
         {
+            PageNumber = 1;
+
+            BtnBack.Enabled = false;
+            BtnForward.Enabled = false;
+
+            Metod = EnumTabels.ClassTeacher;
+            OffSetRows = 0;
+            NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            BtnClassTeacher();
+        }
+
+        private void BtnClassTeacher()
+        {
+            LabPageNumber.Text = "Номер страницы: " + PageNumber;
             try
             {
                 PrepareGrid();
@@ -244,8 +395,12 @@ namespace DB
                                 "   join lesson ls on cl.id_lesson = ls.id_lesson                                                          " +
                                 "   join object0 ob on ls.id_object = ob.id_object                                                         " +
                                 "   join teacher t on ls.id_teacher = t.id_teacher                                                         " +
-                                "   order by c0.class_number, ob.title ";
-                all_select_button(select);
+                                "   order by c0.class_number, ob.title LIMIT @limit OFFSET @offset";
+                NpgsqlCommand npgsqlCommand = new NpgsqlCommand(select, Program.mainForm.con);
+                LimitRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+                npgsqlCommand.Parameters.AddWithValue("@limit", LimitRows);
+                npgsqlCommand.Parameters.AddWithValue("@offset", OffSetRows);
+                all_select_button(npgsqlCommand);
 
                 dataGridView1.Columns[0].ReadOnly = true;
                 dataGridView1.Columns[1].ReadOnly = true;
@@ -254,29 +409,64 @@ namespace DB
                 dataGridView1.Columns[1].Visible = false;
                 dataGridView1.Columns[3].Visible = false;
                 additionalHandling = "class_lesson";
+                if (OffSetRows >= 0)
+                {
+                    BtnForward.Enabled = true;
+                    BtnForwardAll.Enabled = true;
+                    BtnBackAll.Enabled = true;
+                }
+                BlockBtnForward("class_lesson cl  join class0 c0 on cl.id_class = c0.id_class join lesson ls on cl.id_lesson = ls.id_lesson" +
+                               "join object0 ob on ls.id_object = ob.id_object" +
+                                "join teacher t on ls.id_teacher = t.id_teacher");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
             }
-
         }
 
         private void BtnClassLesson_Click(object sender, EventArgs e)
         {
+            PageNumber = 1;
+
+            BtnBack.Enabled = false;
+            BtnForward.Enabled = false;
+
+            Metod = EnumTabels.ClassLesson;
+            OffSetRows = 0;
+            NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            BtnClassLessonTeacher();
+        }
+
+        private void BtnClassLessonTeacher()
+        {
+            LabPageNumber.Text = "Номер страницы: " + PageNumber;
             try
             {
                 PrepareGrid();
                 string sql = "SELECT cl.id_classlesson, te.namt, te.secondnamet, te.middlenamet, c0.class_number " +
                                 "   FROM class_lesson cl, class0 c0, lesson le, teacher te " +
-                                "   WHERE cl.id_lesson=le.id_lesson AND c0.id_class=cl.id_class AND te.id_teacher=le.id_teacher;";
-                all_select_button(sql);
+                                "   WHERE cl.id_lesson=le.id_lesson AND c0.id_class=cl.id_class AND te.id_teacher=le.id_teacher LIMIT @limit OFFSET @offset;";
+                NpgsqlCommand npgsqlCommand = new NpgsqlCommand(sql, Program.mainForm.con);
+                LimitRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+                npgsqlCommand.Parameters.AddWithValue("@limit", LimitRows);
+                npgsqlCommand.Parameters.AddWithValue("@offset", OffSetRows);
+                all_select_button(npgsqlCommand);
+
+                if (OffSetRows >= 0)
+                {
+                    BtnForward.Enabled = true;
+                    BtnForwardAll.Enabled = true;
+                    BtnBackAll.Enabled = true;
+                }
+                BlockBtnForward("class_lesson cl, class0 c0, lesson le, teacher te " +
+                                "   WHERE cl.id_lesson=le.id_lesson AND c0.id_class=cl.id_class AND te.id_teacher=le.id_teacher;");
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
             }
-
         }
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -410,6 +600,222 @@ namespace DB
         private void Btn10_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private long getCount(string tableName)
+        {
+            return (long)(new NpgsqlCommand("select count(*) FROM " + tableName, Program.mainForm.con).ExecuteScalar());
+        }
+
+        private void BlockBtnForward(string tableName)
+        {
+
+            BlockForward = getCount(tableName);
+            if (BlockForward <= NumberRows)
+            {
+                BtnForward.Enabled = false;
+            }
+        }
+
+
+        private void BtnBack_Click(object sender, EventArgs e)
+        {
+            OffSetRows -= int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            PageNumber -= 1;
+            NumberRows -= LimitRows;
+            NotGo = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            if (LimitRows != NotGo)
+            {
+                BtnBack.Enabled = false;
+                BtnForward.Enabled = false;
+                BtnBackAll.Enabled = false;
+                BtnForwardAll.Enabled = false;
+                return;
+            }
+            switch (Metod)
+            {
+                case EnumTabels.ClassTeacher:
+                    BtnClassTeacher();
+
+                    break;
+                case EnumTabels.Object0:
+                    BtnObjectTecher();
+
+                    break;
+                case EnumTabels.Teacher:
+                    BtnTeacherMetod();
+
+                    break;
+                case EnumTabels.Lesson:
+                    BtnLessonTeacher();
+
+                    break;
+                case EnumTabels.LessonVid:
+                    BtnLessonVidTeacher();
+
+                    break;
+                case EnumTabels.ClassLesson:
+                    BtnClassLessonTeacher();
+
+                    break;
+
+                default:
+                    throw new Exception("Нету обработки шаг назад: " + Metod.ToString());
+            }
+            if (OffSetRows <= 0)
+            {
+                BtnBack.Enabled = false;
+            }
+        }
+
+        private void BtnForward_Click(object sender, EventArgs e)
+        {
+            OffSetRows += int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            PageNumber += 1;
+            NumberRows += LimitRows;
+            NotGo = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            if (LimitRows != NotGo)
+            {
+                BtnBack.Enabled = false;
+                BtnForward.Enabled = false;
+                BtnBackAll.Enabled = false;
+                BtnForwardAll.Enabled = false;
+                return;
+            }
+            switch (Metod)
+            {
+                case EnumTabels.ClassTeacher:
+                    BtnClassTeacher();
+
+                    break;
+
+                case EnumTabels.Object0:
+                    BtnObjectTecher();
+
+                    break;
+                case EnumTabels.Teacher:
+                    BtnTeacherMetod();
+
+                    break;
+                case EnumTabels.Lesson:
+                    BtnLessonTeacher();
+
+                    break;
+                case EnumTabels.LessonVid:
+                    BtnLessonVidTeacher();
+
+                    break;
+                case EnumTabels.ClassLesson:
+                    BtnClassLessonTeacher();
+
+                    break;
+
+                default:
+                    throw new Exception("Нету обработки шаг вперёд: " + Metod.ToString());
+            }
+            if (OffSetRows >= 0)
+            {
+                BtnBack.Enabled = true;
+            }
+        }
+
+        private void BtnBackAll_Click(object sender, EventArgs e)
+        {
+            OffSetRows = 0;
+            PageNumber = 1;
+            NumberRows = LimitRows;
+            switch (Metod)
+            {
+                case EnumTabels.ClassTeacher:
+                    BtnClassTeacher();
+
+                    break;
+
+                case EnumTabels.Object0:
+                    BtnObjectTecher();
+
+                    break;
+                case EnumTabels.Teacher:
+                    BtnTeacherMetod();
+
+                    break;
+                case EnumTabels.Lesson:
+                    BtnLessonTeacher();
+
+                    break;
+                case EnumTabels.LessonVid:
+                    BtnLessonVidTeacher();
+
+                    break;
+                case EnumTabels.ClassLesson:
+                    BtnClassLessonTeacher();
+
+                    break;
+
+                default:
+                    throw new Exception("Нету обработки полностью назад: " + Metod.ToString());
+            }
+            OffSetRowsAll = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+            BtnBack.Enabled = false;
+            if (OffSetRowsAll < BlockForward)
+            {
+                BtnForward.Enabled = true;
+            }
+        }
+
+        private void BtnForwardAll_Click(object sender, EventArgs e)
+        {
+
+            MaxRows = BlockForward;
+            PageNumber = 1;
+            while (MaxRows > LimitRows)
+            {
+                MaxRows -= LimitRows;
+                PageNumber += 1;
+            }
+
+            OffSetRows = BlockForward - MaxRows;
+            switch (Metod)
+            {
+                case EnumTabels.ClassTeacher:
+                    BtnClassTeacher();
+
+                    break;
+
+                case EnumTabels.Object0:
+                    BtnObjectTecher();
+
+                    break;
+                case EnumTabels.Teacher:
+                    BtnTeacherMetod();
+
+                    break;
+                case EnumTabels.Lesson:
+                    BtnLessonTeacher();
+
+                    break;
+                case EnumTabels.LessonVid:
+                    BtnLessonVidTeacher();
+
+                    break;
+                case EnumTabels.ClassLesson:
+                    BtnClassLessonTeacher();
+
+                    break;
+
+                default:
+                    throw new Exception("Нету обработки полностью вперёд: " + Metod.ToString());
+            }
+            if (LimitRows < BlockForward)
+            {
+                BtnBack.Enabled = true;
+            }
+            BtnForward.Enabled = false;
+        }
+
+        private void BtnLesson_Load(object sender, EventArgs e)
+        {
+            ComBoxLimitRows.Text = ComBoxLimitRows.Items[0].ToString();
         }
     }
 }
