@@ -162,6 +162,38 @@ namespace DB
 
         }
 
+        private void all_update_button_OnlyClass(NpgsqlCommand npgsqlCommand)
+        {
+            allowEdit();
+            Program.mainForm.da = new NpgsqlDataAdapter(npgsqlCommand);
+
+            NpgsqlCommandBuilder npgsqlCommandBuilder = new NpgsqlCommandBuilder(Program.mainForm.da);
+            Program.mainForm.da.InsertCommand = npgsqlCommandBuilder.GetInsertCommand();
+            IList<NpgsqlParameter> prms = new List<NpgsqlParameter>();
+            foreach (NpgsqlParameter oneParam in Program.mainForm.da.InsertCommand.Parameters)
+            {
+                prms.Add(oneParam.Clone());
+            }
+            Program.mainForm.da.InsertCommand = new NpgsqlCommand("INSERT INTO \"school\".\"public\".\"class0\"(\"class_number\", \"class_flag\") VALUES(@p1, 'Y')", Program.mainForm.con);
+            Program.mainForm.da.InsertCommand.Parameters.AddRange(prms.ToArray());
+            Program.mainForm.da.UpdateCommand = npgsqlCommandBuilder.GetUpdateCommand();
+            Program.mainForm.da.DeleteCommand = npgsqlCommandBuilder.GetDeleteCommand();
+            prms.Clear();
+            foreach (NpgsqlParameter oneParam in Program.mainForm.da.UpdateCommand.Parameters)
+            {
+                prms.Add(oneParam.Clone());
+            }
+            Program.mainForm.da.DeleteCommand = new NpgsqlCommand("UPDATE \"school\".\"public\".\"class0\" SET \"class_flag\" = 'N' WHERE ((\"id_class\" = @p2) AND (\"class_number\" = @p3))", Program.mainForm.con);
+            Program.mainForm.da.DeleteCommand.Parameters.AddRange(prms.ToArray());
+            Program.mainForm.ds.Reset();
+            Program.mainForm.da.Fill(Program.mainForm.ds);
+            Program.mainForm.dt = Program.mainForm.ds.Tables[0];
+            dataGridView1.DataSource = Program.mainForm.dt;
+            dataGridView1.Columns[0].ReadOnly = false;
+            dataGridView1.Columns[1].ReadOnly = false;
+
+        }
+
         private void PrepareGrid()
         {
             foreach (DataGridViewColumn column in dataGridView1.Columns)
@@ -621,12 +653,13 @@ namespace DB
             try
             {
                 PrepareGrid();
-                string select = "SELECT cl.id_class, cl.class_number FROM class0 cl ORDER BY class_number LIMIT @limit OFFSET @offset;";
+                string select = "SELECT cl.id_class, cl.class_number FROM class0 cl WHERE cl.class_flag = 'Y' ORDER BY class_number LIMIT @limit OFFSET @offset;";
+                //string select = "SELECT cl.id_class, cl.class_number, cl.class_flag FROM class0 cl ORDER BY class_number LIMIT @limit OFFSET @offset;";
                 NpgsqlCommand npgsqlCommand = new NpgsqlCommand(select, Program.mainForm.con);
                 LimitRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
                 npgsqlCommand.Parameters.AddWithValue("@limit", LimitRows);
                 npgsqlCommand.Parameters.AddWithValue("@offset", OffSetRows);
-                all_update_button(npgsqlCommand);
+                all_update_button_OnlyClass(npgsqlCommand);
                 dataGridView1.Columns[0].ReadOnly = true;
                 dataGridView1.Columns[0].Visible = false;
                 additionalHandling = "class0";
