@@ -24,6 +24,11 @@ namespace DB
         long BlockForward;
         long OffSetRowsAll;
         long MaxRows;
+        string SelectAll;
+        string SelectName;
+        string SelectSurname;
+        string SelectPatronymic;
+
         /// <summary>
         /// конструктор формы
         /// </summary>
@@ -181,6 +186,12 @@ namespace DB
         {
             PageNumber = 1;
 
+            ComBoxAll.Text = "";
+            ComBoxName.Text = "";
+            ComBoxSurname.Text = "";
+            ComBoxPatronymic.Text = "";
+
+            BtnConnectFilter.Enabled = true;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
 
@@ -188,13 +199,19 @@ namespace DB
             OffSetRows = 0;
             NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
             BtnOrderStudentChoice();
+            FilterComBoxAll("SELECT title FROM object0 ORDER BY title");
+            FilterComBoxName("SELECT nams FROM student ORDER BY nams");
+            FilterConBoxSurname("SELECT secondnames FROM student ORDER BY secondnames");
+            FilterComBoxPatronymic("SELECT middlenames FROM student ORDER BY middlenames");
         }
 
         private void BtnOrderStudentChoice()
         {
             LabPageNumber.Text = "Номер страницы: " + PageNumber;
 
-            string sql = "SELECT chs.id_choicestudent, s.nams, s.secondnames, s.middlenames, ob.title FROM choicestudent chs, student s, object0 ob WHERE s.id_student=chs.id_student and ob.id_object=chs.id_object LIMIT @limit OFFSET @offset;";
+            string sql = "SELECT chs.id_choicestudent, s.nams, s.secondnames, s.middlenames, ob.title " +
+                "FROM choicestudent chs, student s, object0 ob " +
+                "WHERE s.id_student=chs.id_student and ob.id_object=chs.id_object LIMIT @limit OFFSET @offset;";
             NpgsqlCommand npgsqlCommand = new NpgsqlCommand(sql, Program.mainForm.con);
             LimitRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
             npgsqlCommand.Parameters.AddWithValue("@limit", LimitRows);
@@ -271,6 +288,12 @@ namespace DB
         {
             PageNumber = 1;
 
+            ComBoxAll.Text = "";
+            ComBoxName.Text = "";
+            ComBoxSurname.Text = "";
+            ComBoxPatronymic.Text = "";
+
+            BtnConnectFilter.Enabled = true;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
 
@@ -278,13 +301,19 @@ namespace DB
             OffSetRows = 0;
             NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
             BtnOrderStudent();
+            FilterComBoxAll("SELECT class_number FROM class0 ORDER BY class_number");
+            FilterComBoxName("SELECT nams FROM student ORDER BY nams");
+            FilterConBoxSurname("SELECT secondnames FROM student ORDER BY secondnames");
+            FilterComBoxPatronymic("SELECT middlenames FROM student ORDER BY middlenames");
         }
 
         private void BtnOrderStudent()
         {
             LabPageNumber.Text = "Номер страницы: " + PageNumber;
 
-            string sql = "SELECT s.id_student, c0.class_number, s.nams, s.secondnames, s.middlenames, s.logins, s.passwords FROM student s join class0 c0 on s.id_class = c0.id_class ORDER BY c0.class_number; ";
+            string sql = "SELECT s.id_student, c0.class_number, s.nams, s.secondnames, s.middlenames, s.logins, s.passwords " +
+                        "FROM student s join class0 c0 on s.id_class = c0.id_class ORDER BY c0.class_number " +
+                        "LIMIT @limit OFFSET @offset; ";
             NpgsqlCommand npgsqlCommand = new NpgsqlCommand(sql, Program.mainForm.con);
             LimitRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
             npgsqlCommand.Parameters.AddWithValue("@limit", LimitRows);
@@ -298,6 +327,249 @@ namespace DB
                 BtnBackAll.Enabled = true;
             }
             BlockBtnForward("student s join class0 c0 on s.id_class = c0.id_class");
+        }
+
+        private void BtnConnectFilter_Click(object sender, EventArgs e)
+        {
+            switch (Metod)
+            {
+                case EnumTabels.OrderStudent:
+                    ConnectFilterStudent();
+
+                    break;
+                case EnumTabels.OrderStudentChoice:
+                    ConnectFilterObjectStudent();
+
+                    break;
+                case EnumTabels.ConnectFilterStudent:
+                    ConnectFilterStudent();
+
+                    break;
+                case EnumTabels.ConnectFilterObjectStudent:
+                    ConnectFilterObjectStudent();
+
+                break;
+
+                default:
+                    throw new Exception("Нету обработки фильтр: " + Metod.ToString());
+            }
+        }
+
+        private void ConnectFilterStudent()
+
+        {
+            Metod = EnumTabels.ConnectFilterStudent;
+            LabPageNumber.Text = "Номер страницы: " + PageNumber;
+            try
+            {
+                PrepareGrid();
+
+                string sqlPattern = "SELECT {0} " +
+                             "   FROM student s join class0 c0 on s.id_class = c0.id_class" +
+                             "   WHERE (c0.class_number = @class0 OR @class0 = '')" +
+                             "   AND (s.nams = @names OR @names = '')" +
+                             "   AND (s.secondnames = @surname  OR @surname = '')" +
+                             "   AND (s.middlenames = @patronymic OR @patronymic = '')" +
+                             "   {1};";
+
+
+                string sql = string.Format(sqlPattern, "s.id_student, c0.class_number, s.nams, s.secondnames, s.middlenames, s.logins, s.passwords", "LIMIT @limit OFFSET @offset");
+                string sqlCount = string.Format(sqlPattern, "count(*)", "");
+
+                NpgsqlCommand npgsqlCommand = new NpgsqlCommand(sql, Program.mainForm.con);
+                LimitRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+                SelectAll = ComBoxAll.SelectedItem == null ? "" : ComBoxAll.SelectedItem.ToString();
+                SelectName = ComBoxName.SelectedItem == null ? "" : ComBoxName.SelectedItem.ToString();
+                SelectSurname = ComBoxSurname.SelectedItem == null ? "" : ComBoxSurname.SelectedItem.ToString();
+                SelectPatronymic = ComBoxPatronymic.SelectedItem == null ? "" : ComBoxPatronymic.SelectedItem.ToString();
+
+                npgsqlCommand.Parameters.Add("@class0", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@class0"].Value = SelectAll;
+
+                npgsqlCommand.Parameters.Add("@names", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@names"].Value = SelectName;
+
+                npgsqlCommand.Parameters.Add("@surname", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@surname"].Value = SelectSurname;
+
+                npgsqlCommand.Parameters.Add("@patronymic", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@patronymic"].Value = SelectPatronymic;
+                npgsqlCommand.Parameters.AddWithValue("@limit", LimitRows);
+                npgsqlCommand.Parameters.AddWithValue("@offset", OffSetRows);
+                NpgsqlCommand npgsqlCommandConnect = new NpgsqlCommand(sqlCount, Program.mainForm.con);
+
+                npgsqlCommandConnect.Parameters.AddRange(new NpgsqlParameter[] { npgsqlCommand.Parameters[0].Clone(),
+                                                            npgsqlCommand.Parameters[1].Clone(), npgsqlCommand.Parameters[2].Clone(),
+                                                            npgsqlCommand.Parameters[3].Clone() });
+                all_select_button(npgsqlCommand);
+
+                if (OffSetRows >= 0)
+                {
+                    BtnForward.Enabled = true;
+                    BtnForwardAll.Enabled = true;
+                    BtnBackAll.Enabled = true;
+                }
+                BlockBtnForwardConnect(npgsqlCommandConnect);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void ConnectFilterObjectStudent()
+        {
+            Metod = EnumTabels.ConnectFilterObjectStudent;
+            LabPageNumber.Text = "Номер страницы: " + PageNumber;
+            try
+            {
+                PrepareGrid();
+
+                string sqlPattern = "SELECT {0} " +
+                             "   FROM choicestudent chs, student s, object0 ob" +
+                             "   WHERE s.id_student=chs.id_student AND ob.id_object=chs.id_object " +
+                             "   AND (ob.title = @title OR @title = '')" +
+                             "   AND (s.nams = @names OR @names = '')" +
+                             "   AND (s.secondnames = @surname  OR @surname = '')" +
+                             "   AND (s.middlenames = @patronymic OR @patronymic = '')" +
+                             "   {1};";
+
+
+                string sql = string.Format(sqlPattern, "chs.id_choicestudent, s.nams, s.secondnames, s.middlenames, ob.title", "LIMIT @limit OFFSET @offset");
+                string sqlCount = string.Format(sqlPattern, "count(*)", "");
+
+                NpgsqlCommand npgsqlCommand = new NpgsqlCommand(sql, Program.mainForm.con);
+                LimitRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+                SelectAll = ComBoxAll.SelectedItem == null ? "" : ComBoxAll.SelectedItem.ToString();
+                SelectName = ComBoxName.SelectedItem == null ? "" : ComBoxName.SelectedItem.ToString();
+                SelectSurname = ComBoxSurname.SelectedItem == null ? "" : ComBoxSurname.SelectedItem.ToString();
+                SelectPatronymic = ComBoxPatronymic.SelectedItem == null ? "" : ComBoxPatronymic.SelectedItem.ToString();
+
+                npgsqlCommand.Parameters.Add("@title", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@title"].Value = SelectAll;
+
+                npgsqlCommand.Parameters.Add("@names", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@names"].Value = SelectName;
+
+                npgsqlCommand.Parameters.Add("@surname", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@surname"].Value = SelectSurname;
+
+                npgsqlCommand.Parameters.Add("@patronymic", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@patronymic"].Value = SelectPatronymic;
+                npgsqlCommand.Parameters.AddWithValue("@limit", LimitRows);
+                npgsqlCommand.Parameters.AddWithValue("@offset", OffSetRows);
+                NpgsqlCommand npgsqlCommandConnect = new NpgsqlCommand(sqlCount, Program.mainForm.con);
+
+                npgsqlCommandConnect.Parameters.AddRange(new NpgsqlParameter[] { npgsqlCommand.Parameters[0].Clone(),
+                                                            npgsqlCommand.Parameters[1].Clone(), npgsqlCommand.Parameters[2].Clone(),
+                                                            npgsqlCommand.Parameters[3].Clone() });
+                all_select_button(npgsqlCommand);
+
+                if (OffSetRows >= 0)
+                {
+                    BtnForward.Enabled = true;
+                    BtnForwardAll.Enabled = true;
+                    BtnBackAll.Enabled = true;
+                }
+                BlockBtnForwardConnect(npgsqlCommandConnect);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        #region фильтр обычный
+        private void FilterComBoxName(string selectName)
+        {
+            ComBoxName.Items.Clear();
+            NpgsqlDataReader npgsqlDataReader = null;
+            try
+            {
+                npgsqlDataReader = new NpgsqlCommand(selectName, Program.mainForm.con).ExecuteReader();
+                while (npgsqlDataReader.Read())
+                {
+                    ComBoxName.Items.Add(npgsqlDataReader.GetString(0));
+                }
+            }
+            finally
+            {
+                npgsqlDataReader.Close();
+            }
+        }
+
+        private void FilterComBoxAll(string selectSql)
+        {
+            ComBoxAll.Items.Clear();
+            NpgsqlDataReader npgsqlDataReader = null;
+            try
+            {
+                npgsqlDataReader = new NpgsqlCommand(selectSql, Program.mainForm.con).ExecuteReader();
+                while (npgsqlDataReader.Read())
+                {
+                    ComBoxAll.Items.Add(npgsqlDataReader.GetString(0));
+                }
+            }
+            finally
+            {
+                npgsqlDataReader.Close();
+            }
+        }
+
+        private void FilterConBoxSurname(string selectSurname)
+        {
+            ComBoxSurname.Items.Clear();
+            NpgsqlDataReader npgsqlDataReader = null;
+            try
+            {
+                npgsqlDataReader = new NpgsqlCommand(selectSurname, Program.mainForm.con).ExecuteReader();
+                while (npgsqlDataReader.Read())
+                {
+                    ComBoxSurname.Items.Add(npgsqlDataReader.GetString(0));
+                }
+            }
+            finally
+            {
+                npgsqlDataReader.Close();
+            }
+        }
+
+        private void FilterComBoxPatronymic(string selectPatronymic)
+        {
+            ComBoxPatronymic.Items.Clear();
+            NpgsqlDataReader npgsqlDataReader = null;
+            try
+            {
+                npgsqlDataReader = new NpgsqlCommand(selectPatronymic, Program.mainForm.con).ExecuteReader();
+                while (npgsqlDataReader.Read())
+                {
+                    ComBoxPatronymic.Items.Add(npgsqlDataReader.GetString(0));
+                }
+            }
+            finally
+            {
+                npgsqlDataReader.Close();
+            }
+        }
+
+        #endregion
+
+        private long getCountConnect(NpgsqlCommand npgsqlCommand)
+        {
+            return (long)(npgsqlCommand.ExecuteScalar());
+        }
+
+
+        private void BlockBtnForwardConnect(NpgsqlCommand npgsqlCommand)
+        {
+
+            BlockForward = getCountConnect(npgsqlCommand);
+            if (BlockForward <= NumberRows)
+            {
+                BtnForward.Enabled = false;
+            }
         }
 
         /// <summary>
@@ -326,6 +598,12 @@ namespace DB
         {
             PageNumber = 1;
 
+            ComBoxAll.Text = "";
+            ComBoxName.Text = "";
+            ComBoxSurname.Text = "";
+            ComBoxPatronymic.Text = "";
+
+            BtnConnectFilter.Enabled = false;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
 
@@ -375,6 +653,12 @@ namespace DB
         {
             PageNumber = 1;
 
+            ComBoxAll.Text = "";
+            ComBoxName.Text = "";
+            ComBoxSurname.Text = "";
+            ComBoxPatronymic.Text = "";
+
+            BtnConnectFilter.Enabled = false;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
 
@@ -423,6 +707,12 @@ namespace DB
         {
             PageNumber = 1;
 
+            ComBoxAll.Text = "";
+            ComBoxName.Text = "";
+            ComBoxSurname.Text = "";
+            ComBoxPatronymic.Text = "";
+
+            BtnConnectFilter.Enabled = false;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
 
@@ -491,6 +781,12 @@ namespace DB
         {
             PageNumber = 1;
 
+            ComBoxAll.Text = "";
+            ComBoxName.Text = "";
+            ComBoxSurname.Text = "";
+            ComBoxPatronymic.Text = "";
+
+            BtnConnectFilter.Enabled = false;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
 
@@ -741,6 +1037,14 @@ namespace DB
                     BtnOrderStudent();
 
                     break;
+                case EnumTabels.ConnectFilterStudent:
+                    ConnectFilterStudent();
+
+                    break;
+                case EnumTabels.ConnectFilterObjectStudent:
+                    ConnectFilterObjectStudent();
+
+                    break;
 
                 default:
                     throw new Exception("Нету обработки шаг назад: " + Metod.ToString());
@@ -792,6 +1096,14 @@ namespace DB
                     BtnOrderStudent();
 
                     break;
+                case EnumTabels.ConnectFilterStudent:
+                    ConnectFilterStudent();
+
+                    break;
+                case EnumTabels.ConnectFilterObjectStudent:
+                    ConnectFilterObjectStudent();
+
+                    break;
 
                 default:
                     throw new Exception("Нету обработки шаг вперёд: " + Metod.ToString());
@@ -832,6 +1144,14 @@ namespace DB
                     break;
                 case EnumTabels.OrderStudent:
                     BtnOrderStudent();
+
+                    break;
+                case EnumTabels.ConnectFilterStudent:
+                    ConnectFilterStudent();
+
+                    break;
+                case EnumTabels.ConnectFilterObjectStudent:
+                    ConnectFilterObjectStudent();
 
                     break;
 
@@ -885,6 +1205,14 @@ namespace DB
                     BtnOrderStudent();
 
                     break;
+                case EnumTabels.ConnectFilterStudent:
+                    ConnectFilterStudent();
+
+                    break;
+                case EnumTabels.ConnectFilterObjectStudent:
+                    ConnectFilterObjectStudent();
+
+                    break;
 
                 default:
                     throw new Exception("Нету обработки полностью вперёд: " + Metod.ToString());
@@ -894,6 +1222,31 @@ namespace DB
                 BtnBack.Enabled = true;
             }
             BtnForward.Enabled = false;
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbParam1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ComBoxLimitRows_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LabPageNumber_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

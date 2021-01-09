@@ -27,7 +27,7 @@ namespace DB
         string SelectName;
         string SelectSurname;
         string SelectPatronymic;
-        EnumConnect MetodConnect = EnumConnect.None;
+        //EnumConnect MetodConnect = EnumConnect.None;
         public BtnLesson()
         {
             InitializeComponent();

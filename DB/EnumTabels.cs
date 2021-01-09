@@ -22,6 +22,7 @@ namespace DB
         ClassLesson,
         ConnectFilterClass,
         ConnectFilterObject,
-
+        ConnectFilterStudent,
+        ConnectFilterObjectStudent,
     }
 }
