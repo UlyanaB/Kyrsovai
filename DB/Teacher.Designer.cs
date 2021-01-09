@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button2 = new System.Windows.Forms.Button();
@@ -48,6 +48,11 @@
             this.BtnForward = new System.Windows.Forms.Button();
             this.BtnForwardAll = new System.Windows.Forms.Button();
             this.LabPageNumber = new System.Windows.Forms.Label();
+            this.ComBoxAll = new System.Windows.Forms.ComboBox();
+            this.ComBoxName = new System.Windows.Forms.ComboBox();
+            this.ComBoxSurname = new System.Windows.Forms.ComboBox();
+            this.ComBoxPatronymic = new System.Windows.Forms.ComboBox();
+            this.BtnConnectFilter = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -55,45 +60,45 @@
             // 
             // dataGridView1
             // 
-            dataGridViewCellStyle25.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle25;
+            dataGridViewCellStyle13.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle13;
             this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle26.BackColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle26.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle26.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle26;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle27.BackColor = System.Drawing.Color.Silver;
-            dataGridViewCellStyle27.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle27.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle27.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle27.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle27;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = System.Drawing.Color.Silver;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle15;
             this.dataGridView1.EnableHeadersVisualStyles = false;
             this.dataGridView1.GridColor = System.Drawing.SystemColors.Control;
             this.dataGridView1.Location = new System.Drawing.Point(13, 14);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle28.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle28.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle28.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle28.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle28.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle28;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle16;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1185, 508);
+            this.dataGridView1.Size = new System.Drawing.Size(1151, 577);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             // 
@@ -105,7 +110,7 @@
             this.groupBox1.Controls.Add(this.BtnTeacher);
             this.groupBox1.Controls.Add(this.BtnObject);
             this.groupBox1.Controls.Add(this.btnSave);
-            this.groupBox1.Location = new System.Drawing.Point(1219, 14);
+            this.groupBox1.Location = new System.Drawing.Point(1181, 14);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -175,7 +180,7 @@
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.BtnClassLesson);
             this.groupBox2.Controls.Add(this.BtnLessonVid);
-            this.groupBox2.Location = new System.Drawing.Point(1219, 249);
+            this.groupBox2.Location = new System.Drawing.Point(1181, 249);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -186,7 +191,8 @@
             // 
             // BtnClassLesson
             // 
-            this.BtnClassLesson.Location = new System.Drawing.Point(0, 63);
+            this.BtnClassLesson.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnClassLesson.Location = new System.Drawing.Point(0, 60);
             this.BtnClassLesson.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BtnClassLesson.Name = "BtnClassLesson";
             this.BtnClassLesson.Size = new System.Drawing.Size(200, 23);
@@ -197,6 +203,7 @@
             // 
             // BtnLessonVid
             // 
+            this.BtnLessonVid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnLessonVid.Location = new System.Drawing.Point(0, 33);
             this.BtnLessonVid.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BtnLessonVid.Name = "BtnLessonVid";
@@ -208,6 +215,7 @@
             // 
             // ComBoxLimitRows
             // 
+            this.ComBoxLimitRows.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ComBoxLimitRows.FormattingEnabled = true;
             this.ComBoxLimitRows.Items.AddRange(new object[] {
             "10",
@@ -215,14 +223,15 @@
             "30",
             "50",
             "100"});
-            this.ComBoxLimitRows.Location = new System.Drawing.Point(1219, 358);
+            this.ComBoxLimitRows.Location = new System.Drawing.Point(1181, 358);
             this.ComBoxLimitRows.Name = "ComBoxLimitRows";
             this.ComBoxLimitRows.Size = new System.Drawing.Size(121, 24);
             this.ComBoxLimitRows.TabIndex = 3;
             // 
             // BtnBack
             // 
-            this.BtnBack.Location = new System.Drawing.Point(1219, 389);
+            this.BtnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnBack.Location = new System.Drawing.Point(1181, 389);
             this.BtnBack.Name = "BtnBack";
             this.BtnBack.Size = new System.Drawing.Size(53, 23);
             this.BtnBack.TabIndex = 4;
@@ -232,7 +241,8 @@
             // 
             // BtnBackAll
             // 
-            this.BtnBackAll.Location = new System.Drawing.Point(1219, 419);
+            this.BtnBackAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnBackAll.Location = new System.Drawing.Point(1181, 419);
             this.BtnBackAll.Name = "BtnBackAll";
             this.BtnBackAll.Size = new System.Drawing.Size(53, 23);
             this.BtnBackAll.TabIndex = 5;
@@ -242,7 +252,8 @@
             // 
             // BtnForward
             // 
-            this.BtnForward.Location = new System.Drawing.Point(1278, 390);
+            this.BtnForward.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnForward.Location = new System.Drawing.Point(1240, 390);
             this.BtnForward.Name = "BtnForward";
             this.BtnForward.Size = new System.Drawing.Size(53, 23);
             this.BtnForward.TabIndex = 6;
@@ -252,7 +263,8 @@
             // 
             // BtnForwardAll
             // 
-            this.BtnForwardAll.Location = new System.Drawing.Point(1278, 419);
+            this.BtnForwardAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnForwardAll.Location = new System.Drawing.Point(1240, 419);
             this.BtnForwardAll.Name = "BtnForwardAll";
             this.BtnForwardAll.Size = new System.Drawing.Size(53, 23);
             this.BtnForwardAll.TabIndex = 7;
@@ -262,18 +274,71 @@
             // 
             // LabPageNumber
             // 
+            this.LabPageNumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.LabPageNumber.AutoSize = true;
-            this.LabPageNumber.Location = new System.Drawing.Point(1219, 449);
+            this.LabPageNumber.Location = new System.Drawing.Point(1181, 449);
             this.LabPageNumber.Name = "LabPageNumber";
             this.LabPageNumber.Size = new System.Drawing.Size(80, 17);
             this.LabPageNumber.TabIndex = 8;
             this.LabPageNumber.Text = "Страниц: 0";
             // 
+            // ComBoxAll
+            // 
+            this.ComBoxAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ComBoxAll.FormattingEnabled = true;
+            this.ComBoxAll.Location = new System.Drawing.Point(1177, 482);
+            this.ComBoxAll.Name = "ComBoxAll";
+            this.ComBoxAll.Size = new System.Drawing.Size(121, 24);
+            this.ComBoxAll.TabIndex = 9;
+            // 
+            // ComBoxName
+            // 
+            this.ComBoxName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ComBoxName.FormattingEnabled = true;
+            this.ComBoxName.Location = new System.Drawing.Point(1177, 513);
+            this.ComBoxName.Name = "ComBoxName";
+            this.ComBoxName.Size = new System.Drawing.Size(121, 24);
+            this.ComBoxName.TabIndex = 10;
+            // 
+            // ComBoxSurname
+            // 
+            this.ComBoxSurname.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ComBoxSurname.FormattingEnabled = true;
+            this.ComBoxSurname.Location = new System.Drawing.Point(1177, 544);
+            this.ComBoxSurname.Name = "ComBoxSurname";
+            this.ComBoxSurname.Size = new System.Drawing.Size(121, 24);
+            this.ComBoxSurname.TabIndex = 11;
+            // 
+            // ComBoxPatronymic
+            // 
+            this.ComBoxPatronymic.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ComBoxPatronymic.FormattingEnabled = true;
+            this.ComBoxPatronymic.Location = new System.Drawing.Point(1177, 574);
+            this.ComBoxPatronymic.Name = "ComBoxPatronymic";
+            this.ComBoxPatronymic.Size = new System.Drawing.Size(121, 24);
+            this.ComBoxPatronymic.TabIndex = 12;
+            // 
+            // BtnConnectFilter
+            // 
+            this.BtnConnectFilter.Enabled = false;
+            this.BtnConnectFilter.Location = new System.Drawing.Point(1387, 309);
+            this.BtnConnectFilter.Name = "BtnConnectFilter";
+            this.BtnConnectFilter.Size = new System.Drawing.Size(90, 24);
+            this.BtnConnectFilter.TabIndex = 13;
+            this.BtnConnectFilter.Text = "Связанный ";
+            this.BtnConnectFilter.UseVisualStyleBackColor = true;
+            this.BtnConnectFilter.Click += new System.EventHandler(this.BtnConnectFilter_Click);
+            // 
             // BtnLesson
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1452, 534);
+            this.ClientSize = new System.Drawing.Size(1472, 603);
+            this.Controls.Add(this.BtnConnectFilter);
+            this.Controls.Add(this.ComBoxPatronymic);
+            this.Controls.Add(this.ComBoxSurname);
+            this.Controls.Add(this.ComBoxName);
+            this.Controls.Add(this.ComBoxAll);
             this.Controls.Add(this.LabPageNumber);
             this.Controls.Add(this.BtnForwardAll);
             this.Controls.Add(this.BtnForward);
@@ -313,5 +378,10 @@
         private System.Windows.Forms.Button BtnForward;
         private System.Windows.Forms.Button BtnForwardAll;
         private System.Windows.Forms.Label LabPageNumber;
+        private System.Windows.Forms.ComboBox ComBoxAll;
+        private System.Windows.Forms.ComboBox ComBoxName;
+        private System.Windows.Forms.ComboBox ComBoxSurname;
+        private System.Windows.Forms.ComboBox ComBoxPatronymic;
+        private System.Windows.Forms.Button BtnConnectFilter;
     }
 }

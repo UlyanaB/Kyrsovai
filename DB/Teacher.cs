@@ -23,7 +23,11 @@ namespace DB
         long BlockForward;
         long OffSetRowsAll;
         long MaxRows;
-
+        string SelectAll;
+        string SelectName;
+        string SelectSurname;
+        string SelectPatronymic;
+        EnumConnect MetodConnect = EnumConnect.None;
         public BtnLesson()
         {
             InitializeComponent();
@@ -155,8 +159,14 @@ namespace DB
         {
             PageNumber = 1;
 
+            BtnConnectFilter.Enabled = false;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
+
+            ComBoxAll.Text = "";
+            ComBoxName.Text = "";
+            ComBoxSurname.Text = "";
+            ComBoxPatronymic.Text = "";
 
             Metod = EnumTabels.Object0;
             OffSetRows = 0;
@@ -201,8 +211,14 @@ namespace DB
         {
             PageNumber = 1;
 
+            BtnConnectFilter.Enabled = false;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
+
+            ComBoxAll.Text = "";
+            ComBoxName.Text = "";
+            ComBoxSurname.Text = "";
+            ComBoxPatronymic.Text = "";
 
             Metod = EnumTabels.Teacher;
             OffSetRows = 0;
@@ -263,8 +279,14 @@ namespace DB
         {
             PageNumber = 1;
 
+            BtnConnectFilter.Enabled = false;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
+
+            ComBoxAll.Text = "";
+            ComBoxName.Text = "";
+            ComBoxSurname.Text = "";
+            ComBoxPatronymic.Text = "";
 
             Metod = EnumTabels.Lesson;
             OffSetRows = 0;
@@ -314,15 +336,27 @@ namespace DB
 
         private void BtnLessonVid_Click(object sender, EventArgs e)
         {
+
             PageNumber = 1;
 
+            BtnConnectFilter.Enabled = true;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
+
+            ComBoxAll.Text = "";
+            ComBoxName.Text = "";
+            ComBoxSurname.Text = "";
+            ComBoxPatronymic.Text = "";
+            
 
             Metod = EnumTabels.LessonVid;
             OffSetRows = 0;
             NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
             BtnLessonVidTeacher();
+            FilterComBoxAll("SELECT title FROM object0 ORDER BY title");
+            FilterComBoxName("SELECT namt FROM teacher ORDER BY namt");
+            FilterConBoxSurname("SELECT secondnamet FROM teacher ORDER BY secondnamet");
+            FilterComBoxPatronymic("SELECT middlenamet FROM teacher ORDER BY middlenamet");
         }
 
         private void BtnLessonVidTeacher()
@@ -372,8 +406,14 @@ namespace DB
         {
             PageNumber = 1;
 
+            BtnConnectFilter.Enabled = false;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
+
+            ComBoxAll.Text = "";
+            ComBoxName.Text = "";
+            ComBoxSurname.Text = "";
+            ComBoxPatronymic.Text = "";
 
             Metod = EnumTabels.ClassTeacher;
             OffSetRows = 0;
@@ -429,6 +469,12 @@ namespace DB
         {
             PageNumber = 1;
 
+            ComBoxAll.Text = "";
+            ComBoxName.Text = "";
+            ComBoxSurname.Text = "";
+            ComBoxPatronymic.Text = "";
+
+            BtnConnectFilter.Enabled = true;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
 
@@ -436,6 +482,11 @@ namespace DB
             OffSetRows = 0;
             NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
             BtnClassLessonTeacher();
+            FilterComBoxAll("SELECT class_number FROM class0 ORDER BY class_number");
+            FilterComBoxName("SELECT namt FROM teacher ORDER BY namt");
+            FilterConBoxSurname("SELECT secondnamet FROM teacher ORDER BY secondnamet");
+            FilterComBoxPatronymic("SELECT middlenamet FROM teacher ORDER BY middlenamet");
+            
         }
 
         private void BtnClassLessonTeacher()
@@ -461,6 +512,234 @@ namespace DB
                 }
                 BlockBtnForward("class_lesson cl, class0 c0, lesson le, teacher te " +
                                 "   WHERE cl.id_lesson=le.id_lesson AND c0.id_class=cl.id_class AND te.id_teacher=le.id_teacher;");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        #region фильтр обычный
+        private void FilterComBoxName(string selectName)
+        {
+            ComBoxName.Items.Clear();
+            NpgsqlDataReader npgsqlDataReader = null;
+            try
+            {
+                npgsqlDataReader = new NpgsqlCommand(selectName, Program.mainForm.con).ExecuteReader();
+                while (npgsqlDataReader.Read())
+                {
+                    ComBoxName.Items.Add(npgsqlDataReader.GetString(0));
+                }
+            }
+            finally
+            {
+                npgsqlDataReader.Close();
+            }
+        }
+
+        private void FilterComBoxAll(string selectSql)
+        {
+            ComBoxAll.Items.Clear();
+            NpgsqlDataReader npgsqlDataReader = null;
+            try
+            {
+                npgsqlDataReader = new NpgsqlCommand(selectSql, Program.mainForm.con).ExecuteReader();
+                while (npgsqlDataReader.Read())
+                {
+                    ComBoxAll.Items.Add(npgsqlDataReader.GetString(0));
+                }
+            }
+            finally
+            {
+                npgsqlDataReader.Close();
+            }
+        }
+
+        private void FilterConBoxSurname(string selectSurname)
+        {
+            ComBoxSurname.Items.Clear();
+            NpgsqlDataReader npgsqlDataReader = null;
+            try
+            {
+                npgsqlDataReader = new NpgsqlCommand(selectSurname, Program.mainForm.con).ExecuteReader();
+                while (npgsqlDataReader.Read())
+                {
+                    ComBoxSurname.Items.Add(npgsqlDataReader.GetString(0));
+                }
+            }
+            finally
+            {
+                npgsqlDataReader.Close();
+            }
+        }
+
+        private void FilterComBoxPatronymic(string selectPatronymic)
+        {
+            ComBoxPatronymic.Items.Clear();
+            NpgsqlDataReader npgsqlDataReader = null;
+            try
+            {
+                npgsqlDataReader = new NpgsqlCommand(selectPatronymic, Program.mainForm.con).ExecuteReader();
+                while (npgsqlDataReader.Read())
+                {
+                    ComBoxPatronymic.Items.Add(npgsqlDataReader.GetString(0));
+                }
+            }
+            finally
+            {
+                npgsqlDataReader.Close();
+            }
+        }
+
+        #endregion
+
+        private void BtnConnectFilter_Click(object sender, EventArgs e)
+        {
+            switch (Metod)
+            {
+                case EnumTabels.ClassLesson:
+                    ConnectFiltrClass();
+
+                    break;
+                case EnumTabels.LessonVid:
+                    ConnectFiltrObject();
+
+                    break;
+                case EnumTabels.ConnectFilterClass:
+                    ConnectFiltrClass();
+
+                    break;
+                case EnumTabels.ConnectFilterObject:
+                    ConnectFiltrObject();
+
+                    break;
+
+                default:
+                    throw new Exception("Нету обработки фильтр: " + Metod.ToString());
+            }
+            //MetodConnect = EnumConnect.ConnectFilter;
+            //Metod = EnumTabels.ConnectFilter;
+        }
+
+        private void ConnectFiltrObject()
+        {
+            Metod = EnumTabels.ConnectFilterObject;
+            LabPageNumber.Text = "Номер страницы: " + PageNumber;
+            try
+            {
+                PrepareGrid();
+
+                string sqlPattern = "SELECT {0} " +
+                             "   FROM lesson ls, object0 ob, teacher te" +
+                             "   WHERE ls.id_object = ob.id_object AND ls.id_teacher=te.id_teacher " +
+                             "   AND (ob.title = @title OR @title = '')" +
+                             "   AND (te.namt = @namet OR @namet = '')" +
+                             "   AND (te.secondnamet = @surname  OR @surname = '')" +
+                             "   AND (te.middlenamet = @patronymic OR @patronymic = '')" +
+                             "   {1};";
+
+
+                string sql = string.Format(sqlPattern, "ls.id_lesson, ob.title, te.namt, te.secondnamet, te.middlenamet", "LIMIT @limit OFFSET @offset");
+                string sqlCount = string.Format(sqlPattern, "count(*)", "");
+
+                NpgsqlCommand npgsqlCommand = new NpgsqlCommand(sql, Program.mainForm.con);
+                LimitRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+                SelectAll = ComBoxAll.SelectedItem == null ? "" : ComBoxAll.SelectedItem.ToString();
+                SelectName = ComBoxName.SelectedItem == null ? "" : ComBoxName.SelectedItem.ToString();
+                SelectSurname = ComBoxSurname.SelectedItem == null ? "" : ComBoxSurname.SelectedItem.ToString();
+                SelectPatronymic = ComBoxPatronymic.SelectedItem == null ? "" : ComBoxPatronymic.SelectedItem.ToString();
+
+                npgsqlCommand.Parameters.Add("@title", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@title"].Value = SelectAll;
+
+                npgsqlCommand.Parameters.Add("@namet", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@namet"].Value = SelectName;
+
+                npgsqlCommand.Parameters.Add("@surname", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@surname"].Value = SelectSurname;
+
+                npgsqlCommand.Parameters.Add("@patronymic", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@patronymic"].Value = SelectPatronymic;
+                npgsqlCommand.Parameters.AddWithValue("@limit", LimitRows);
+                npgsqlCommand.Parameters.AddWithValue("@offset", OffSetRows);
+                NpgsqlCommand npgsqlCommandConnect = new NpgsqlCommand(sqlCount, Program.mainForm.con);
+
+                npgsqlCommandConnect.Parameters.AddRange(new NpgsqlParameter[] { npgsqlCommand.Parameters[0].Clone(),
+                                                            npgsqlCommand.Parameters[1].Clone(), npgsqlCommand.Parameters[2].Clone(),
+                                                            npgsqlCommand.Parameters[3].Clone() });
+                all_select_button(npgsqlCommand);
+
+                if (OffSetRows >= 0)
+                {
+                    BtnForward.Enabled = true;
+                    BtnForwardAll.Enabled = true;
+                    BtnBackAll.Enabled = true;
+                }
+                BlockBtnForwardConnect(npgsqlCommandConnect);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void ConnectFiltrClass()
+        {
+            Metod = EnumTabels.ConnectFilterClass;
+            LabPageNumber.Text = "Номер страницы: " + PageNumber;
+            try
+            {
+                PrepareGrid();
+
+                string sqlPattern = "SELECT {0} " +
+                             "   FROM class_lesson cl, class0 c0, lesson le, teacher te " +
+                             "   WHERE cl.id_lesson=le.id_lesson AND c0.id_class=cl.id_class AND te.id_teacher=le.id_teacher " +
+                             "   AND (c0.class_number = @class0 OR @class0 = '')" +
+                             "   AND (te.namt = @namet OR @namet = '')" +
+                             "   AND (te.secondnamet = @surname  OR @surname = '')" +
+                             "   AND (te.middlenamet = @patronymic OR @patronymic = '')" +
+                             "   {1};";
+
+                string sql = string.Format(sqlPattern, "cl.id_classlesson, te.namt, te.secondnamet, te.middlenamet, c0.class_number", "LIMIT @limit OFFSET @offset");
+                string sqlCount = string.Format(sqlPattern, "count(*)", "");
+                
+                NpgsqlCommand npgsqlCommand = new NpgsqlCommand(sql, Program.mainForm.con);
+                LimitRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
+                SelectAll = ComBoxAll.SelectedItem == null ? "" : ComBoxAll.SelectedItem.ToString();
+                SelectName = ComBoxName.SelectedItem == null ? "" : ComBoxName.SelectedItem.ToString();
+                SelectSurname = ComBoxSurname.SelectedItem == null ? "" : ComBoxSurname.SelectedItem.ToString();
+                SelectPatronymic = ComBoxPatronymic.SelectedItem == null ? "" : ComBoxPatronymic.SelectedItem.ToString();
+               
+                npgsqlCommand.Parameters.Add("@class0", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@class0"].Value = SelectAll;
+               
+                npgsqlCommand.Parameters.Add("@namet", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@namet"].Value = SelectName;
+               
+                npgsqlCommand.Parameters.Add("@surname", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@surname"].Value = SelectSurname;
+                
+                npgsqlCommand.Parameters.Add("@patronymic", NpgsqlTypes.NpgsqlDbType.Text, 20);
+                npgsqlCommand.Parameters["@patronymic"].Value = SelectPatronymic;
+                npgsqlCommand.Parameters.AddWithValue("@limit", LimitRows);
+                npgsqlCommand.Parameters.AddWithValue("@offset", OffSetRows);
+                NpgsqlCommand npgsqlCommandConnect = new NpgsqlCommand(sqlCount, Program.mainForm.con);
+                
+                npgsqlCommandConnect.Parameters.AddRange(new NpgsqlParameter[] { npgsqlCommand.Parameters[0].Clone(),
+                                                            npgsqlCommand.Parameters[1].Clone(), npgsqlCommand.Parameters[2].Clone(), 
+                                                            npgsqlCommand.Parameters[3].Clone() });
+                all_select_button(npgsqlCommand);
+
+                if (OffSetRows >= 0)
+                {
+                    BtnForward.Enabled = true;
+                    BtnForwardAll.Enabled = true;
+                    BtnBackAll.Enabled = true;
+                }
+                BlockBtnForwardConnect(npgsqlCommandConnect);
 
             }
             catch (Exception ex)
@@ -617,7 +896,38 @@ namespace DB
             }
         }
 
+        private long getCountConnect(string sqlCount)
+        {
+            return (long)(new NpgsqlCommand(sqlCount, Program.mainForm.con).ExecuteScalar());
+        }
 
+        private void BlockBtnForwardConnect(string sqlCount)
+        {
+
+            BlockForward = getCountConnect(sqlCount);
+            if (BlockForward <= NumberRows)
+            {
+                BtnForward.Enabled = false;
+            }
+        }
+
+        private long getCountConnect(NpgsqlCommand npgsqlCommand)
+        {
+            return (long)(npgsqlCommand.ExecuteScalar());
+        }
+
+
+        private void BlockBtnForwardConnect(NpgsqlCommand npgsqlCommand)
+        {
+
+            BlockForward = getCountConnect(npgsqlCommand);
+            if (BlockForward <= NumberRows)
+            {
+                BtnForward.Enabled = false;
+            }
+        }
+
+        #region листание по страницам
         private void BtnBack_Click(object sender, EventArgs e)
         {
             OffSetRows -= int.Parse(ComBoxLimitRows.SelectedItem.ToString());
@@ -656,6 +966,10 @@ namespace DB
                     break;
                 case EnumTabels.ClassLesson:
                     BtnClassLessonTeacher();
+
+                    break;
+                case EnumTabels.ConnectFilterClass:
+                    ConnectFiltrClass();
 
                     break;
 
@@ -709,6 +1023,10 @@ namespace DB
                     BtnClassLessonTeacher();
 
                     break;
+                case EnumTabels.ConnectFilterClass:
+                    ConnectFiltrClass();
+
+                    break;
 
                 default:
                     throw new Exception("Нету обработки шаг вперёд: " + Metod.ToString());
@@ -749,6 +1067,10 @@ namespace DB
                     break;
                 case EnumTabels.ClassLesson:
                     BtnClassLessonTeacher();
+
+                    break;
+                case EnumTabels.ConnectFilterClass:
+                    ConnectFiltrClass();
 
                     break;
 
@@ -802,6 +1124,10 @@ namespace DB
                     BtnClassLessonTeacher();
 
                     break;
+                case EnumTabels.ConnectFilterClass:
+                    ConnectFiltrClass();
+
+                    break;
 
                 default:
                     throw new Exception("Нету обработки полностью вперёд: " + Metod.ToString());
@@ -813,6 +1139,7 @@ namespace DB
             BtnForward.Enabled = false;
         }
 
+        #endregion
         private void BtnLesson_Load(object sender, EventArgs e)
         {
             ComBoxLimitRows.Text = ComBoxLimitRows.Items[0].ToString();

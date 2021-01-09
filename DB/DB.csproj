@@ -80,6 +80,7 @@
     <Compile Include="ChangeStudentChoice.Designer.cs">
       <DependentUpon>ChangeStudentChoice.cs</DependentUpon>
     </Compile>
+    <Compile Include="EnumConnect.cs" />
     <Compile Include="EnumTabels.cs" />
     <Compile Include="InputAdmin.cs">
       <SubType>Form</SubType>

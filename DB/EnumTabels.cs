@@ -20,6 +20,8 @@ namespace DB
         ClassTeacher,
         LessonVid,
         ClassLesson,
+        ConnectFilterClass,
+        ConnectFilterObject,
 
     }
 }
