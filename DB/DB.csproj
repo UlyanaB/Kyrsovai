@@ -81,6 +81,7 @@
       <DependentUpon>ChangeStudentChoice.cs</DependentUpon>
     </Compile>
     <Compile Include="EnumConnect.cs" />
+    <Compile Include="EnumSeverity.cs" />
     <Compile Include="EnumTabels.cs" />
     <Compile Include="InputAdmin.cs">
       <SubType>Form</SubType>
@@ -126,6 +127,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ToLog.cs" />
     <EmbeddedResource Include="ChangeClass.resx">
       <DependentUpon>ChangeClass.cs</DependentUpon>
     </EmbeddedResource>

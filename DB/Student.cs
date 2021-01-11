@@ -148,7 +148,7 @@ namespace DB
         {
             allowEdit();
             Program.mainForm.da = new NpgsqlDataAdapter(npgsqlCommand);
-
+            Program.mainForm.da.RowUpdated += Da_RowUpdated;
             NpgsqlCommandBuilder npgsqlCommandBuilder = new NpgsqlCommandBuilder(Program.mainForm.da);
             Program.mainForm.da.InsertCommand = npgsqlCommandBuilder.GetInsertCommand();
             Program.mainForm.da.UpdateCommand = npgsqlCommandBuilder.GetUpdateCommand();
@@ -160,6 +160,39 @@ namespace DB
             dataGridView1.Columns[0].ReadOnly = false;
             dataGridView1.Columns[1].ReadOnly = false;
 
+        }
+
+        private string ToString(object[] obj)
+        {
+            string res = null;
+            for(int i = 1; i < obj.Length; i++)
+            {
+                res += ", " + obj[i].ToString();
+            }
+            return res;
+        }
+
+        private void Da_RowUpdated(object sender, NpgsqlRowUpdatedEventArgs e)
+        {
+            switch(e.StatementType)
+            {
+                case System.Data.StatementType.Insert:
+                    Program.mainForm.toLog.Add(Program.mainForm.IdAdmin, EnumSeverity.Info, "Добавленно в " 
+                        + this.Metod.ToString() + " " + ToString(e.Row.ItemArray));
+
+                    break;
+                case System.Data.StatementType.Delete:
+                    Program.mainForm.toLog.Add(Program.mainForm.IdAdmin, EnumSeverity.Info, "Удалено из "
+                        + this.Metod.ToString());
+
+                    break;
+                case System.Data.StatementType.Update:
+                    Program.mainForm.toLog.Add(Program.mainForm.IdAdmin, EnumSeverity.Info, "Изменено в "
+                        + this.Metod.ToString() + " на строке " + e.Row.ItemArray[0].ToString() + " на " + ToString(e.Row.ItemArray));
+
+                    break;
+            }
+            
         }
 
         private void all_update_button_OnlyClass(NpgsqlCommand npgsqlCommand)
