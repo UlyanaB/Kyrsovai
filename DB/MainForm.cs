@@ -14,10 +14,10 @@ namespace DB
 {
     public partial class MainForm : Form
     {
-        const string connectionString = @"Data Source=IDEAPAD\SQLEXPRESS; Initial Catalog = AdminDB; Integrated Security = True"; 
+        //const string connectionString = @"Data Source=IDEAPAD\SQLEXPRESS; Initial Catalog = AdminDB; Integrated Security = True"; 
 
         private InputAdmin inputAdmin = null;
-        private SqlConnection sqlConnection = null;
+        internal SqlConnection sqlConnection = null;
 
         internal int IdAdmin;
         internal NpgsqlConnection con = null;
@@ -49,7 +49,7 @@ namespace DB
             int? rslt = null;
             string selectCmd = @"select 1 from adminDB a where a.logina = @lgn and a.passworda = @psw";
 
-            using (sqlConnection = new SqlConnection(connectionString))
+            using (sqlConnection = new SqlConnection(Properties.Settings.Default.ConnectionString))
             {
                 sqlConnection.Open();
                 if (sqlConnection.State != ConnectionState.Open)

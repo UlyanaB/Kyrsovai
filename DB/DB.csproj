@@ -176,5 +176,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Kyrsovai-Work\Kyrsovai-Work\Registrator\Registrator.csproj">
+      <Project>{8332d1f1-9d2b-4d3b-84fa-b5c447ff4225}</Project>
+      <Name>Registrator</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
