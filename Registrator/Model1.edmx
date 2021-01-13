@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AdminDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="adminDB">
+          <Key>
+            <PropertyRef Name="id_admin" />
+          </Key>
+          <Property Name="id_admin" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="logina" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="passworda" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="mail" Type="nchar" MaxLength="50" />
+          <Property Name="name" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="logs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="msg" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="record">
+          <Key>
+            <PropertyRef Name="id_record" />
+          </Key>
+          <Property Name="id_record" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_admin" Type="int" Nullable="false" />
+          <Property Name="NameCom" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="dataCom" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tmpAdminDB">
+          <Key>
+            <PropertyRef Name="guid_admin" />
+          </Key>
+          <Property Name="guid_admin" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="logina" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="passworda" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="mail" Type="nchar" MaxLength="50" />
+          <Property Name="name" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK__record__id_admin__4CA06362">
+          <End Role="adminDB" Type="Self.adminDB" Multiplicity="1" />
+          <End Role="record" Type="Self.record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="adminDB">
+              <PropertyRef Name="id_admin" />
+            </Principal>
+            <Dependent Role="record">
+              <PropertyRef Name="id_admin" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AdminDBModelStoreContainer">
+          <EntitySet Name="adminDB" EntityType="Self.adminDB" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="logs" EntityType="Self.logs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="record" EntityType="Self.record" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tmpAdminDB" EntityType="Self.tmpAdminDB" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__record__id_admin__4CA06362" Association="Self.FK__record__id_admin__4CA06362">
+            <End Role="adminDB" EntitySet="adminDB" />
+            <End Role="record" EntitySet="record" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AdminDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="adminDB">
+          <Key>
+            <PropertyRef Name="id_admin" />
+          </Key>
+          <Property Name="id_admin" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="logina" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="passworda" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="mail" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="record" Relationship="Self.FK__record__id_admin__4CA06362" FromRole="adminDB" ToRole="record" />
+        </EntityType>
+        <EntityType Name="logs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="msg" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="record">
+          <Key>
+            <PropertyRef Name="id_record" />
+          </Key>
+          <Property Name="id_record" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_admin" Type="Int32" Nullable="false" />
+          <Property Name="NameCom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="dataCom" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="adminDB" Relationship="Self.FK__record__id_admin__4CA06362" FromRole="record" ToRole="adminDB" />
+        </EntityType>
+        <EntityType Name="tmpAdminDB">
+          <Key>
+            <PropertyRef Name="guid_admin" />
+          </Key>
+          <Property Name="guid_admin" Type="Guid" Nullable="false" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="logina" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="passworda" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="mail" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK__record__id_admin__4CA06362">
+          <End Role="adminDB" Type="Self.adminDB" Multiplicity="1" />
+          <End Role="record" Type="Self.record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="adminDB">
+              <PropertyRef Name="id_admin" />
+            </Principal>
+            <Dependent Role="record">
+              <PropertyRef Name="id_admin" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AdminDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="adminDB" EntityType="Self.adminDB" />
+          <EntitySet Name="logs" EntityType="Self.logs" />
+          <EntitySet Name="record" EntityType="Self.record" />
+          <EntitySet Name="tmpAdminDB" EntityType="Self.tmpAdminDB" />
+          <AssociationSet Name="FK__record__id_admin__4CA06362" Association="Self.FK__record__id_admin__4CA06362">
+            <End Role="adminDB" EntitySet="adminDB" />
+            <End Role="record" EntitySet="record" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AdminDBModelStoreContainer" CdmEntityContainer="AdminDBEntities">
+          <EntitySetMapping Name="adminDB">
+            <EntityTypeMapping TypeName="AdminDBModel.adminDB">
+              <MappingFragment StoreEntitySet="adminDB">
+                <ScalarProperty Name="id_admin" ColumnName="id_admin" />
+                <ScalarProperty Name="logina" ColumnName="logina" />
+                <ScalarProperty Name="passworda" ColumnName="passworda" />
+                <ScalarProperty Name="mail" ColumnName="mail" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="logs">
+            <EntityTypeMapping TypeName="AdminDBModel.logs">
+              <MappingFragment StoreEntitySet="logs">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="msg" ColumnName="msg" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="record">
+            <EntityTypeMapping TypeName="AdminDBModel.record">
+              <MappingFragment StoreEntitySet="record">
+                <ScalarProperty Name="id_record" ColumnName="id_record" />
+                <ScalarProperty Name="id_admin" ColumnName="id_admin" />
+                <ScalarProperty Name="NameCom" ColumnName="NameCom" />
+                <ScalarProperty Name="dataCom" ColumnName="dataCom" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tmpAdminDB">
+            <EntityTypeMapping TypeName="AdminDBModel.tmpAdminDB">
+              <MappingFragment StoreEntitySet="tmpAdminDB">
+                <ScalarProperty Name="guid_admin" ColumnName="guid_admin" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="logina" ColumnName="logina" />
+                <ScalarProperty Name="passworda" ColumnName="passworda" />
+                <ScalarProperty Name="mail" ColumnName="mail" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

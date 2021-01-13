@@ -260,14 +260,16 @@ namespace DB
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
 
+            ComBoxAll.Enabled = true;
+            ComBoxName.Enabled = true;
+            ComBoxSurname.Enabled = true;
+            ComBoxPatronymic.Enabled = true;
+
             Metod = EnumTabels.OrderStudentChoice;
             OffSetRows = 0;
             NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
             BtnOrderStudentChoice();
-            FilterComBoxAll("SELECT title FROM object0 ORDER BY title");
-            FilterComBoxName("SELECT nams FROM student ORDER BY nams");
-            FilterConBoxSurname("SELECT secondnames FROM student ORDER BY secondnames");
-            FilterComBoxPatronymic("SELECT middlenames FROM student ORDER BY middlenames");
+            DinamFilterValueStudentObject();
         }
 
         private void BtnOrderStudentChoice()
@@ -362,14 +364,16 @@ namespace DB
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
 
+            ComBoxAll.Enabled = true;
+            ComBoxName.Enabled = true;
+            ComBoxSurname.Enabled = true;
+            ComBoxPatronymic.Enabled = true;
+
             Metod = EnumTabels.OrderStudent;
             OffSetRows = 0;
             NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
             BtnOrderStudent();
-            FilterComBoxAll("SELECT class_number FROM class0 ORDER BY class_number");
-            FilterComBoxName("SELECT nams FROM student ORDER BY nams");
-            FilterConBoxSurname("SELECT secondnames FROM student ORDER BY secondnames");
-            FilterComBoxPatronymic("SELECT middlenames FROM student ORDER BY middlenames");
+            DinamFilterValueStudent();
         }
 
         private void BtnOrderStudent()
@@ -410,10 +414,19 @@ namespace DB
                     ConnectFilterStudent();
 
                     break;
+                case EnumTabels.Student:
+                    ConnectFilterStudent();
+
+                    break;
                 case EnumTabels.ConnectFilterObjectStudent:
                     ConnectFilterObjectStudent();
 
                 break;
+                case EnumTabels.StudentChoice:
+                    ConnectFilterObjectStudent();
+
+                    break;
+
 
                 default:
                     throw new Exception("Нету обработки фильтр: " + Metod.ToString());
@@ -778,14 +791,20 @@ namespace DB
             ComBoxSurname.Text = "";
             ComBoxPatronymic.Text = "";
 
-            BtnConnectFilter.Enabled = false;
+            BtnConnectFilter.Enabled = true;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
+
+            ComBoxAll.Enabled = true;
+            ComBoxName.Enabled = true;
+            ComBoxSurname.Enabled = true;
+            ComBoxPatronymic.Enabled = true;
 
             Metod = EnumTabels.Student;
             OffSetRows = 0;
             NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
             BtnStudent();
+            DinamFilterValueStudent();
         }
 
         private void BtnStudent()
@@ -835,6 +854,36 @@ namespace DB
             {
                 MessageBox.Show(ex.Message, "Error");
             }
+            switch (Metod)
+            {
+                case EnumTabels.Student:
+                    DinamFilterValueStudent();
+
+                    break;
+                case EnumTabels.StudentChoice:
+                    DinamFilterValueStudentObject();
+
+                    break;
+                case EnumTabels.OrderStudentChoice:
+                    DinamFilterValueStudentObject();
+
+                    break;
+                case EnumTabels.OrderStudent:
+                    DinamFilterValueStudent();
+
+                    break;
+                case EnumTabels.ConnectFilterStudent:
+                    DinamFilterValueStudent();
+
+                    break;
+                case EnumTabels.ConnectFilterObjectStudent:
+                    DinamFilterValueStudentObject();
+
+                    break;
+
+                default:
+                    throw new Exception("Нету фильтра " + Metod.ToString());
+            }
 
         }
 
@@ -852,14 +901,21 @@ namespace DB
             ComBoxSurname.Text = "";
             ComBoxPatronymic.Text = "";
 
-            BtnConnectFilter.Enabled = false;
+            BtnConnectFilter.Enabled = true;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
+
+            ComBoxAll.Enabled = true;
+            ComBoxName.Enabled = true;
+            ComBoxSurname.Enabled = true;
+            ComBoxPatronymic.Enabled = true;
 
             Metod = EnumTabels.StudentChoice;
             OffSetRows = 0;
             NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
             BtnStudentChoice();
+            DinamFilterValueStudentObject();
+            
         }
 
         private void BtnStudentChoice()
@@ -903,6 +959,11 @@ namespace DB
             {
                 MessageBox.Show(ex.Message, "Error");
             }
+        }
+
+        private void BtnSveazanFilter_Click(object sender, EventArgs e)
+        {
+
         }
 
         #endregion Методы для работы с формами ввода данных
@@ -1062,7 +1123,7 @@ namespace DB
             }
         }
 
-
+        #region Шаги по таблицам
         private void BtnBack_Click(object sender, EventArgs e)
         {
             OffSetRows -= int.Parse(ComBoxLimitRows.SelectedItem.ToString());
@@ -1289,7 +1350,9 @@ namespace DB
             }
             BtnForward.Enabled = false;
         }
+        #endregion
 
+        #region Не используется
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
@@ -1314,5 +1377,40 @@ namespace DB
         {
 
         }
+        #endregion
+
+        #region динамический фильтр
+        private void DinamFilterValueStudent()
+        {
+            //const string strFilterComBoxAll = "SELECT DISTINCT (select c.class_number from class0 c where c.id_class = s.id_class) class_number FROM    student s";
+            //const string strFilterComBoxName = "SELECT  s.nams FROM student s join class0 c0 on s.id_class = c0.id_class ORDER BY c0.class_number";
+            //const string strFilterConBoxSurname = "SELECT  s.secondnames FROM student s join class0 c0 on s.id_class = c0.id_class ORDER BY c0.class_number";
+            //const string strFilterComBoxPatronymic = "SELECT s.middlenames FROM student s join class0 c0 on s.id_class = c0.id_class ORDER BY c0.class_number";
+
+            const string strFilterComBoxAll = "SELECT DISTINCT (select c.class_number from class0 c where c.id_class = s.id_class) class_number FROM    student s";
+            const string strFilterComBoxName = "SELECT  s.nams FROM student s join class0 c0 on s.id_class = c0.id_class ORDER BY c0.class_number";
+            const string strFilterConBoxSurname = "SELECT  s.secondnames FROM student s join class0 c0 on s.id_class = c0.id_class ORDER BY c0.class_number";
+            const string strFilterComBoxPatronymic = "SELECT s.middlenames FROM student s join class0 c0 on s.id_class = c0.id_class ORDER BY c0.class_number";
+
+            FilterComBoxAll(strFilterComBoxAll);
+            FilterComBoxName(strFilterComBoxName);
+            FilterConBoxSurname(strFilterConBoxSurname);
+            FilterComBoxPatronymic(strFilterComBoxPatronymic);
+        }
+
+        private void DinamFilterValueStudentObject()
+        {
+            FilterComBoxAll("SELECT DISTINCT ob.title FROM choicestudent chs, student s, object0 ob " +
+                            "WHERE s.id_student=chs.id_student and ob.id_object=chs.id_object");
+            FilterComBoxName("SELECT DISTINCT s.nams FROM choicestudent chs, student s, object0 ob " +
+                            "WHERE s.id_student=chs.id_student and ob.id_object=chs.id_object");
+            FilterConBoxSurname("SELECT DISTINCT s.secondnames FROM choicestudent chs, student s, object0 ob " +
+                            "WHERE s.id_student=chs.id_student and ob.id_object=chs.id_object");
+            FilterComBoxPatronymic("SELECT DISTINCT s.middlenames FROM choicestudent chs, student s, object0 ob " +
+                            "WHERE s.id_student=chs.id_student and ob.id_object=chs.id_object");
+        }
+        #endregion
+
+        
     }
 }

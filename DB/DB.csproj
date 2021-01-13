@@ -179,8 +179,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Kyrsovai-Work\Kyrsovai-Work\Registrator\Registrator.csproj">
-      <Project>{8332d1f1-9d2b-4d3b-84fa-b5c447ff4225}</Project>
+    <ProjectReference Include="..\Registrator\Registrator.csproj">
+      <Project>{8332D1F1-9D2B-4D3B-84FA-B5C447FF4225}</Project>
       <Name>Registrator</Name>
     </ProjectReference>
   </ItemGroup>

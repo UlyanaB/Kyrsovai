@@ -120,7 +120,7 @@ namespace DB
         {
             allowEdit();
             Program.mainForm.da = new NpgsqlDataAdapter(npgsqlCommand);
-
+            Program.mainForm.da.RowUpdated += Da_RowUpdated;
             NpgsqlCommandBuilder npgsqlCommandBuilder = new NpgsqlCommandBuilder(Program.mainForm.da);
             Program.mainForm.da.InsertCommand = npgsqlCommandBuilder.GetInsertCommand();
             Program.mainForm.da.UpdateCommand = npgsqlCommandBuilder.GetUpdateCommand();
@@ -131,6 +131,39 @@ namespace DB
             dataGridView1.DataSource = Program.mainForm.dt;
             dataGridView1.Columns[0].ReadOnly = false;
             dataGridView1.Columns[1].ReadOnly = false;
+        }
+
+        private string ToString(object[] obj)
+        {
+            string res = null;
+            for (int i = 1; i < obj.Length; i++)
+            {
+                res += ", " + obj[i].ToString();
+            }
+            return res;
+        }
+
+        private void Da_RowUpdated(object sender, NpgsqlRowUpdatedEventArgs e)
+        {
+            switch (e.StatementType)
+            {
+                case System.Data.StatementType.Insert:
+                    Program.mainForm.toLog.Add(Program.mainForm.IdAdmin, EnumSeverity.Info, "Добавленно в "
+                        + this.Metod.ToString() + " " + ToString(e.Row.ItemArray));
+
+                    break;
+                case System.Data.StatementType.Delete:
+                    Program.mainForm.toLog.Add(Program.mainForm.IdAdmin, EnumSeverity.Info, "Удалено из "
+                        + this.Metod.ToString());
+
+                    break;
+                case System.Data.StatementType.Update:
+                    Program.mainForm.toLog.Add(Program.mainForm.IdAdmin, EnumSeverity.Info, "Изменено в "
+                        + this.Metod.ToString() + " на строке " + e.Row.ItemArray[0].ToString() + " на " + ToString(e.Row.ItemArray));
+
+                    break;
+            }
+
         }
 
         private void all_update_button(string select)
@@ -292,6 +325,7 @@ namespace DB
             OffSetRows = 0;
             NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
             BtnLessonTeacher();
+            DinamFilterValueTeacherObject();
         }
 
         private void BtnLessonTeacher()
@@ -339,9 +373,19 @@ namespace DB
 
             PageNumber = 1;
 
+            ComBoxAll.Text = "";
+            ComBoxName.Text = "";
+            ComBoxSurname.Text = "";
+            ComBoxPatronymic.Text = "";
+
             BtnConnectFilter.Enabled = true;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
+
+            ComBoxAll.Enabled = true;
+            ComBoxName.Enabled = true;
+            ComBoxSurname.Enabled = true;
+            ComBoxPatronymic.Enabled = true;
 
             ComBoxAll.Text = "";
             ComBoxName.Text = "";
@@ -353,10 +397,8 @@ namespace DB
             OffSetRows = 0;
             NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
             BtnLessonVidTeacher();
-            FilterComBoxAll("SELECT title FROM object0 ORDER BY title");
-            FilterComBoxName("SELECT namt FROM teacher ORDER BY namt");
-            FilterConBoxSurname("SELECT secondnamet FROM teacher ORDER BY secondnamet");
-            FilterComBoxPatronymic("SELECT middlenamet FROM teacher ORDER BY middlenamet");
+            DinamFilterValueTeacherObject();
+            
         }
 
         private void BtnLessonVidTeacher()
@@ -406,9 +448,14 @@ namespace DB
         {
             PageNumber = 1;
 
-            BtnConnectFilter.Enabled = false;
+            BtnConnectFilter.Enabled = true;
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
+
+            ComBoxAll.Enabled = true;
+            ComBoxName.Enabled = true;
+            ComBoxSurname.Enabled = true;
+            ComBoxPatronymic.Enabled = true;
 
             ComBoxAll.Text = "";
             ComBoxName.Text = "";
@@ -478,14 +525,17 @@ namespace DB
             BtnBack.Enabled = false;
             BtnForward.Enabled = false;
 
+            ComBoxAll.Enabled = true;
+            ComBoxName.Enabled = true;
+            ComBoxSurname.Enabled = true;
+            ComBoxPatronymic.Enabled = true;
+
             Metod = EnumTabels.ClassLesson;
             OffSetRows = 0;
             NumberRows = int.Parse(ComBoxLimitRows.SelectedItem.ToString());
             BtnClassLessonTeacher();
-            FilterComBoxAll("SELECT class_number FROM class0 ORDER BY class_number");
-            FilterComBoxName("SELECT namt FROM teacher ORDER BY namt");
-            FilterConBoxSurname("SELECT secondnamet FROM teacher ORDER BY secondnamet");
-            FilterComBoxPatronymic("SELECT middlenamet FROM teacher ORDER BY middlenamet");
+            DinamFilterValueTeacher();
+           
             
         }
 
@@ -612,6 +662,10 @@ namespace DB
 
                     break;
                 case EnumTabels.ConnectFilterObject:
+                    ConnectFiltrObject();
+
+                    break;
+                case EnumTabels.Lesson:
                     ConnectFiltrObject();
 
                     break;
@@ -1143,6 +1197,30 @@ namespace DB
         private void BtnLesson_Load(object sender, EventArgs e)
         {
             ComBoxLimitRows.Text = ComBoxLimitRows.Items[0].ToString();
+        }
+
+        private void DinamFilterValueTeacher()
+        {
+            FilterComBoxAll("SELECT DISTINCT  c0.class_number FROM class_lesson cl, class0 c0, lesson le, teacher te " +
+                            "WHERE cl.id_lesson=le.id_lesson AND c0.id_class=cl.id_class AND te.id_teacher=le.id_teacher");
+            FilterComBoxName("SELECT DISTINCT  te.namt FROM class_lesson cl, class0 c0, lesson le, teacher te " +
+                             "WHERE cl.id_lesson=le.id_lesson AND c0.id_class=cl.id_class AND te.id_teacher=le.id_teacher");
+            FilterConBoxSurname("SELECT DISTINCT  te.secondnamet FROM class_lesson cl, class0 c0, lesson le, teacher te " +
+                                "WHERE cl.id_lesson=le.id_lesson AND c0.id_class=cl.id_class AND te.id_teacher=le.id_teacher");
+            FilterComBoxPatronymic("SELECT DISTINCT  te.middlenamet FROM class_lesson cl, class0 c0, lesson le, teacher te " +
+                                   "WHERE cl.id_lesson=le.id_lesson AND c0.id_class=cl.id_class AND te.id_teacher=le.id_teacher");
+        }
+
+        private void DinamFilterValueTeacherObject()
+        {
+            FilterComBoxAll("SELECT DISTINCT ob.title FROM lesson ls, object0 ob, teacher te  " +
+                            "WHERE ls.id_object = ob.id_object AND ls.id_teacher=te.id_teacher");
+            FilterComBoxName("SELECT DISTINCT te.namt FROM lesson ls, object0 ob, teacher te  " +
+                             "WHERE ls.id_object = ob.id_object AND ls.id_teacher=te.id_teacher");
+            FilterConBoxSurname("SELECT DISTINCT te.secondnamet FROM lesson ls, object0 ob, teacher te  " +
+                                "WHERE ls.id_object = ob.id_object AND ls.id_teacher=te.id_teacher");
+            FilterComBoxPatronymic("SELECT DISTINCT te.middlenamet FROM lesson ls, object0 ob, teacher te  " +
+                                   "WHERE ls.id_object = ob.id_object AND ls.id_teacher=te.id_teacher");
         }
     }
 }

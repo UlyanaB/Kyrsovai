@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB", "DB\DB.csproj", "{8BF0EB96-80A0-4A2C-B605-A2D85F4FC3A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registrator", "..\..\..\Kyrsovai-Work\Kyrsovai-Work\Registrator\Registrator.csproj", "{8332D1F1-9D2B-4D3B-84FA-B5C447FF4225}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registrator", "Registrator\Registrator.csproj", "{8332D1F1-9D2B-4D3B-84FA-B5C447FF4225}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
